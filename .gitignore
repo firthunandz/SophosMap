@@ -1,0 +1,7 @@
+smbackend/node_modules/
+smbackend/.env
+smbackend/dist/
+
+smfrontend/node_modules/
+smfrontend/.env
+smfrontend/dist/
