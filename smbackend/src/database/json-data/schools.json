@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Platonismo",
+    "founder": "Platón",
+    "era": "Edad Antigua",
+    "keyConcepts": [
+      "Teoría de las Ideas",
+      "Mundo sensible vs mundo inteligible",
+      "Alma inmortal"
+    ]
+  },
+  {
+    "name": "Aristotelismo",
+    "founder": "Aristóteles",
+    "era": "Edad Antigua",
+    "keyConcepts": [
+      "Lógica formal",
+      "Teoría de las cuatro causas",
+      "Ética de la virtud"
+    ]
+  },
+  {
+    "name": "Estoicismo",
+    "founder": "Zenón de Citio",
+    "era": "Edad Antigua",
+    "keyConcepts": [
+      "Autocontrol emocional",
+      "Vivir según la naturaleza",
+      "Aceptación del destino"
+    ]
+  },
+  {
+    "name": "Escepticismo",
+    "founder": "Pirrón de Elis",
+    "era": "Edad Antigua",
+    "keyConcepts": [
+      "Suspensión del juicio",
+      "Búsqueda de la ataraxia",
+      "Crítica al dogmatismo"
+    ]
+  },
+  {
+    "name": "Patrística",
+    "founder": "Padres de la Iglesia",
+    "era": "Edad Media",
+    "keyConcepts": [
+      "Síntesis entre cristianismo y filosofía griega",
+      "Teología filosófica",
+      "San Agustín como figura principal"
+    ]
+  },
+  {
+    "name": "Escolástica",
+    "founder": "Anselmo de Canterbury",
+    "era": "Edad Media",
+    "keyConcepts": [
+      "Fe y razón",
+      "Método disputatio",
+      "Tomás de Aquino como máximo exponente"
+    ]
+  },
+  {
+    "name": "Racionalismo",
+    "founder": "René Descartes",
+    "era": "Edad Moderna",
+    "keyConcepts": [
+      "Primacía de la razón",
+      "Método deductivo",
+      "Innatismo"
+    ]
+  },
+  {
+    "name": "Empirismo",
+    "founder": "John Locke",
+    "era": "Edad Moderna",
+    "keyConcepts": [
+      "Conocimiento basado en la experiencia",
+      "Tabula rasa",
+      "Método inductivo"
+    ]
+  },
+  {
+    "name": "Idealismo Alemán",
+    "founder": "Immanuel Kant",
+    "era": "Edad Moderna",
+    "keyConcepts": [
+      "Crítica de la razón",
+      "Imperativo categórico",
+      "Fenómeno vs noúmeno"
+    ]
+  },
+  {
+    "name": "Marxismo",
+    "founder": "Karl Marx",
+    "era": "Edad Contemporánea",
+    "keyConcepts": [
+      "Materialismo histórico",
+      "Lucha de clases",
+      "Crítica al capitalismo"
+    ]
+  },
+  {
+    "name": "Existencialismo",
+    "founder": "Søren Kierkegaard",
+    "era": "Edad Contemporánea",
+    "keyConcepts": [
+      "Existencia precede a esencia",
+      "Libertad y responsabilidad",
+      "Autenticidad"
+    ]
+  },
+  {
+    "name": "Fenomenología",
+    "founder": "Edmund Husserl",
+    "era": "Edad Contemporánea",
+    "keyConcepts": [
+      "Estudio de la conciencia",
+      "Reducción fenomenológica",
+      "Intencionalidad"
+    ]
+  }
+]

@@ -1,8 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
-
-// Cargar las variables de entorno desde el archivo .env
 dotenv.config();
 
 const app = express();
@@ -11,16 +9,18 @@ const app = express();
 app.use(cors());           // Permite peticiones desde otros dominios (útil para frontend)
 app.use(express.json());   // Parsea los cuerpos de las peticiones en formato JSON
 
-// Rutas (las definiremos más adelante)
-const mapRouter = require('./src/routes/map.routes');
-const usersRouter = require('./src/routes/auth.routes');
+// Database
+
+// Rutas
+const timelineRouter = require('./routes/timeline.routes');
+const authRouter = require('./routes/auth.routes');
 
 app.get('/', (req, res) => {
     res.send('¡Servidor de Sophomap funcionando!');
 });
 
-app.use('/sophomap', mapRouter);
-app.use('/users', usersRouter);
+app.use('/sophosmap', timelineRouter);
+app.use('/users', authRouter);
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 4000;
