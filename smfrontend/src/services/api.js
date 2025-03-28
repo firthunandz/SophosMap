@@ -1,8 +1,9 @@
 import axios from 'axios'
 
+let activeRequests = 0;
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 5000,
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -16,15 +17,16 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-api.interceptors.response.use(response => {
-  return response;
-}, error => {
-  console.error('[API] Error en respuesta:', {
-    URL: error.config.url,
-    status: error.response?.status,
-    data: error.response?.data
-  });
-  return Promise.reject(error);
-});
+api.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response?.status === 401) {
+      // Token inválido - forzar logout
+      localStorage.removeItem('token');
+      window.dispatchEvent(new Event('authChange'));
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default api

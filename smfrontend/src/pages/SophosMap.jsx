@@ -1,8 +1,24 @@
 import { useAuth } from '../hooks/useAuth';
 import { Link } from 'react-router-dom';
+import { useSpinner } from '../context/SpinnerContext';
 
 export default function SophosMap() {
+  const { showSpinner, hideSpinner } = useSpinner();
   const { user } = useAuth();
+
+  // useEffect(() => {
+  //   const loadPhilosophers = async () => {
+  //     try {
+  //       showSpinner();
+  //       // Futura implementación de fetch
+  //       const data = await fetchPhilosophers();
+  //       setPhilosophers(data);
+  //     } finally {
+  //       hideSpinner();
+  //     }
+  //   };
+  //   loadPhilosophers();
+  // }, []);
 
   return (
     <>

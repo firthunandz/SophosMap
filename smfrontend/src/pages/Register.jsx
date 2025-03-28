@@ -2,29 +2,32 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { useSpinner } from '../context/SpinnerContext';
 
 export default function Register() {
+  const { showSpinner, hideSpinner } = useSpinner();
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     try {
+      showSpinner();
       const { data: response } = await api.post('/users/register', {
         nickname: data.nickname,
         username: data.username,
         email: data.email,
         password: data.password
       });
-      
       navigate('/users/login');
     } catch (err) {
       setError(err.response?.data?.error || 'Error al registrar usuario');
+    } finally {
+      hideSpinner();
     }
   };
 
   return (
-
       <div className="w-full max-w-md p-8 space-y-8 bg-ivory rounded-lg shadow">
         <h2 className="text-3xl font-bold text-center font-cinzel">Registro</h2>
         

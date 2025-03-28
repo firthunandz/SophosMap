@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import api from '../services/api';
+import { useSpinner } from '../context/SpinnerContext';
 
 export default function Login() {
+  const { showSpinner, hideSpinner } = useSpinner();
   const [formData, setFormData] = useState({
     identifier: '',
     password: ''
@@ -15,12 +17,19 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      showSpinner();
       const { data } = await api.post('/users/login', formData);
-      
       login(data.token, data.user);
       navigate('/home');
     } catch (err) {
+      console.error('Error detallado:', {
+        Code: err.code,
+        Message: err.message,
+        Response: err.response?.data
+      });
       setError(err.response?.data?.error || 'Error al iniciar sesión');
+    } finally {
+      hideSpinner();
     }
   };
 
