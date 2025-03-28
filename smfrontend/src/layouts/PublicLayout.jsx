@@ -4,11 +4,11 @@ import Footer from '../components/Footer';
 
 export default function PublicLayout({children}) {
   return (
-    <div className="min-h-screen flex flex-col bg-papyrus">
+    <div className="h-screen flex flex-col bg-papyrus overflow-hidden">
       <PublicHeader />
-      <div className="flex flex-col flex-1 items-center justify-center">
+      <main className="flex flex-col flex-1 items-center justify-center overflow-y-auto w-full">
         {children || <Outlet />}
-      </div>
+      </main>
       <Footer />
     </div>
   );

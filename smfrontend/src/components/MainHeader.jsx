@@ -7,7 +7,7 @@ const MainHeader = () => {
 
   const handleLogOut = () => {
     logout();
-    window.location.href = '/home';
+    navigate('/home');
   };
 
   if (!user) return null;

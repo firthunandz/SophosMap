@@ -12,38 +12,41 @@ import ProtectedRoute from './ProtectedRoute';
 import AdminRoute from './AdminRoute';
 import { SpinnerProvider } from '../context/SpinnerContext';
 import { Spinner } from '../context/Spinner';
+import { AuthProvider } from '../hooks/useAuth';
 
 export default function AppRouter() {
   return (
+    <AuthProvider>
+
     <SpinnerProvider>
       <BrowserRouter>
         <Spinner />
         <Routes>
           <Route path="/" element={<Navigate to="/home" replace />} />
 
-        {/* Rutas públicas (siempre accesibles) */}
-        <Route element={<PublicLayout />}>
-          <Route path="/users/login" element={<Login />} />
-          <Route path="/users/register" element={<Register />} />
-        </Route>
+          {/* Rutas públicas (siempre accesibles) */}
+          <Route element={<PublicLayout />}>
+            <Route path="/users/login" element={<Login />} />
+            <Route path="/users/register" element={<Register />} />
+          </Route>
 
-        {/* Rutas compartidas */}
-        <Route 
-          path="/home" 
-          element={
-            <ConditionalLayout key={Date.now()}>
-              <Home />
-            </ConditionalLayout>
-          }
-        />
-        <Route 
-          path="/sophosmap" 
-          element={
-            <ConditionalLayout key={Date.now()}>
-              <SophosMap />
-            </ConditionalLayout>
-          }
-        />
+          {/* Rutas compartidas */}
+          <Route 
+            path="/home" 
+            element={
+              <ConditionalLayout>
+                <Home />
+              </ConditionalLayout>
+            }
+            />
+          <Route 
+            path="/sophosmap" 
+            element={
+              <ConditionalLayout>
+                <SophosMap />
+              </ConditionalLayout>
+            }
+            />
 
           <Route path="/sophosmap" element={
             <ConditionalLayout>
@@ -64,5 +67,6 @@ export default function AppRouter() {
         </Routes>
       </BrowserRouter>
     </SpinnerProvider>
+    </AuthProvider>
   );
 }
