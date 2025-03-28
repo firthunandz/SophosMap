@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-papyrus: #f4e6c3; /* Beige hoja de libro */
+  --color-parchment: #e5d5b0; /* Pergamino más oscuro */
+  --color-ink-black: #2d2d2d; /* Negro tinta */
+  --color-warm-brown: #654321; /* Marrón cálido */
+  --color-dark-umber: #4a2c1d; /* Marrón oscuro */
+  --color-antique-gold: #b88e2f; /* Dorado envejecido */
+  --color-warm-gray: #a89f91; /* Gris cálido */
+  --color-deep-sepia: #704214; /* Sepia profundo */
+  --color-ivory: #fffaf0; /* Marfil suave */
+  --color-dusty-rose: #b58b72; /* Un toque sutil de color antiguo */
+
+  --font-cinzel: "Cinzel";
+  --font-eb-garamond: "EB Garamond";
+}
