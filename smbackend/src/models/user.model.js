@@ -40,9 +40,15 @@ const getFavorites = async (userId) => {
   return res.rows.map(row => row.philosopher_name);
 };
 
+const getUserById = async (id) => {
+  const res = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+  return res.rows[0]; // Devuelve el usuario o undefined si no existe
+};
+
 module.exports = {
   getUserByUsername,
   createUser,
   addFavorite,
-  getFavorites
+  getFavorites,
+  getUserById
 };

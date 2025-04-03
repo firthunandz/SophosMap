@@ -6,10 +6,10 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());           // Permite peticiones desde otros dominios (útil para frontend)
-app.use(express.json());   // Parsea los cuerpos de las peticiones en formato JSON
-
-// Database
+app.use(cors({
+    origin: 'http://localhost:5173'
+  }));
+app.use(express.json());
 
 // Rutas
 const timelineRouter = require('./routes/timeline.routes');

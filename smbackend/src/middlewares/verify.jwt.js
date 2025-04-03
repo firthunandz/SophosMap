@@ -1,3 +1,7 @@
+require('dotenv').config()
+const jwt = require('jsonwebtoken'); // <-- ¡Agrega esta línea al inicio!
+const pool = require('../database/connection');
+
 // Middleware para verificar JWT (para usar en otras rutas)
 const verifyToken = async (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1]; // Bearer <token>
@@ -7,7 +11,7 @@ const verifyToken = async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, jwtSecret);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
     // Verificar que el usuario aún existe en la DB
     const user = await pool.query('SELECT id FROM users WHERE id = $1', [decoded.id]);

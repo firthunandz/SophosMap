@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { query } = require('../database/connection');
+const { getUserById } = require('../models/user.model');
 
 // Configuración
 const saltRounds = 10;
@@ -48,7 +49,10 @@ const userLogin = async (req, res) => {
     }
 
     // Actualizar último login
-    await query('UPDATE users SET last_login = NOW() WHERE id = $1', [user.id]);
+    await query(
+      'UPDATE users SET last_login = NOW() WHERE id = $1',
+      [user.id]
+    );
     
     // Generar token
     const token = generateToken(user);
@@ -116,7 +120,25 @@ const userRegister = async (req, res) => {
   }
 };
 
+const userProfile = async (req, res) => {
+  try {
+    const user = await getUserById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    
+    const { password_hash, ...safeUser } = user;
+    res.json(safeUser);
+    
+  } catch (error) {
+    console.error('Error en userProfile:', error);
+    res.status(500).json({ error: 'Error al obtener perfil' });
+  }
+};
+
 module.exports = {
   userLogin,
-  userRegister
+  userRegister,
+  userProfile
 };
