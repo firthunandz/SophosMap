@@ -1,10 +1,12 @@
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'motion/react';
-import philosophers from '../data/philosophers.json';
+import philosophers from '../data/filosofos.json';
 import TimelineItem from './TimelineItem';
+import PhilosopherInfo from './PhilosopherInfo';
 
 export default function Timeline() {
   const containerRef = useRef(null);
+  const [selectedPhilosopher, setSelectedPhilosopher] = useState(null);
 
   return (
     <div className="relative w-full h-full ">
@@ -13,27 +15,34 @@ export default function Timeline() {
         ref={containerRef}
         className="relative h-[80vh] w-full overflow-y-auto"
       >
-        {/* Línea vertical */}
-        {/* <div className="absolute left-1/2 top-0 -translate-x-1/2 w-1 bg-gray-300 h-full" /> */}
 
         {/* Elementos de la línea de tiempo */}
         <motion.div
           className="flex flex-col items-center pt-8 pb-16 pl-4 pr-4 gap-y-6"
         >
-          {philosophers.map((phil, index) => {
+          {philosophers.map((philosopher, index) => {
             const side = index % 2 === 0 ? "left" : "right";
             return (
               <TimelineItem
-                key={index}
-                name={phil.name}
-                birth_date={phil.birth_date}
-                era={phil.era}
+                key={philosopher.id || index}
+                philosopher={philosopher}
+                // birth_date={philosopher.birth_date}
+                // era={philosopher.era}
                 side={side}
+                onSelect={setSelectedPhilosopher}
               />
             );
           })}
         </motion.div>
       </div>
+
+      {/* Modal de detalles */}
+      {selectedPhilosopher && (
+        <PhilosopherInfo 
+          philosopher={selectedPhilosopher}
+          onClose={() => setSelectedPhilosopher(null)}
+        />
+      )}
     </div>
   );
 }
