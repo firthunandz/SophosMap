@@ -9,13 +9,13 @@ Aplicación desktop interactiva de línea temporal de filósofos.
 ## Instalación
 1. **Backend**:
    ```bash
-   cd backend
+   cd smbackend
    npm install
    cp .env.example .env
    npm run dev
 
 2. **Frontend**:
    ```bash
-   cd frontend
+   cd smfrontend
    npm install
-   npm start
+   npm run dev

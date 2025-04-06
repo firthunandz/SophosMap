@@ -1,5 +1,5 @@
 require('dotenv').config()
-const jwt = require('jsonwebtoken'); // <-- ¡Agrega esta línea al inicio!
+const jwt = require('jsonwebtoken');
 const pool = require('../database/connection');
 
 // Middleware para verificar JWT (para usar en otras rutas)

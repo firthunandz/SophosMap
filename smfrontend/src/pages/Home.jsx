@@ -15,9 +15,11 @@ export default function Home() {
             to="/sophosmap" 
             className=""
             >
-            <img src='https://placehold.co/800x400' alt="Link al mapa filosofico" className='w-[800px] h-[500px]' />
+            <img src={MapImg} alt="Link al mapa filosofico" className='w-[800px] h-[500px]' />
           </Link>
         </section>
       </div>
   );
 }
+
+//'https://placehold.co/800x400'

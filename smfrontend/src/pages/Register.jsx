@@ -13,7 +13,7 @@ export default function Register() {
   const onSubmit = async (data) => {
     try {
       showSpinner();
-      const { data: response } = await api.post('/users/register', {
+      const { data: response } = await api.post('/auth/register', {
         nickname: data.nickname,
         username: data.username,
         email: data.email,

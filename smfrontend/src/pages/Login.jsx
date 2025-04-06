@@ -18,7 +18,7 @@ export default function Login() {
     e.preventDefault();
     try {
       showSpinner();
-      const { data } = await api.post('/users/login', formData);
+      const { data } = await api.post('/auth/login', formData);
       login(data.token, data.user);
       navigate('/home');
     } catch (err) {

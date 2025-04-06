@@ -16,13 +16,29 @@ CREATE TABLE users (
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabla de favoritos (solo almacena nombres de filósofos del JSON)
-CREATE TABLE user_favorites (
-    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    philosopher_name VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (user_id, philosopher_name)
+CREATE TABLE philosophers (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    fecha_nacimiento VARCHAR(255),
+    fecha_muerte VARCHAR(255),
+    lugar_nacimiento VARCHAR(255),
+    lugar_muerte VARCHAR(255),
+    escuela VARCHAR(255),
+    era VARCHAR(255),
+    religion VARCHAR(255),
+    notas TEXT,
+    lang VARCHAR(5) NOT NULL DEFAULT 'es'
 );
+
+-- Tabla de favoritos (solo almacena nombres de filósofos del JSON)
+CREATE TABLE favorites (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  philosopher_id INTEGER NOT NULL REFERENCES philosophers(id) ON DELETE CASCADE,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  UNIQUE(user_id, philosopher_id)
+);
+
 
 -- Función para actualizar automáticamente updated_at
 CREATE OR REPLACE FUNCTION update_timestamp()

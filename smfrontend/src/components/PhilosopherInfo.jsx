@@ -1,7 +1,40 @@
-export default function PhilosopherModal({ philosopher, onClose }) {
-  if (!philosopher) return null;
+import { useEffect, useState } from 'react';
+import { useFavorites } from '../context/FavoritesContext';
 
-  // Función para renderizar campos simples
+export default function PhilosopherInfo({ philosopher: propPhilosopher, onClose }) {
+  const token = localStorage.getItem('token');
+  const [philosopher, setPhilosopher] = useState(propPhilosopher || null);
+  const [error, setError] = useState(null);
+  const { favorites, addFavorite, removeFavorite } = useFavorites();
+
+  const isFavorite = philosopher?.id 
+  ? favorites.some(fav => fav.id === philosopher.id)
+  : false;
+
+  useEffect(() => {
+    setPhilosopher(propPhilosopher);
+    }, [propPhilosopher]);
+
+  const toggleFavorite = async () => {
+    if (!token) {
+      alert('Iniciá sesión para marcar como favorito');
+      return;
+    }
+
+    try {
+      if (isFavorite) {
+        removeFavorite(philosopher.id);
+      } else {
+        addFavorite(philosopher.id);
+      }
+    } catch (error) {
+      console.error('Error al actualizar favoritos:', error);
+    }
+  };
+
+  if (error) return <div className="p-6">{error}</div>;
+  if (!philosopher) return <div className="p-6">Cargando filósofo...</div>;
+
   const renderSimpleField = (label, value) => {
     if (!value || (Array.isArray(value) && value.length === 0)) return null;
     return (
@@ -12,7 +45,6 @@ export default function PhilosopherModal({ philosopher, onClose }) {
     );
   };
 
-  // Función para renderizar listas
   const renderListField = (label, items, itemKey = 'title') => {
     if (!items || items.length === 0) return null;
     
@@ -30,7 +62,6 @@ export default function PhilosopherModal({ philosopher, onClose }) {
     );
   };
 
-  // Función para renderizar obras/libros
   const renderWorks = (label, obras) => {
     if (!obras || obras.length === 0) return null;
     
@@ -56,12 +87,26 @@ export default function PhilosopherModal({ philosopher, onClose }) {
         <div className="bg-antique-gold p-4 rounded-t-lg">
           <div className="flex justify-between items-center">
             <h2 className="font-cinzel text-2xl text-white">{philosopher.nombre}</h2>
-            <button 
-              onClick={onClose}
-              className="text-white hover:text-gray-200 text-2xl"
-            >
-              &times;
-            </button>
+            <div className="flex items-center">
+
+              <button 
+                onClick={toggleFavorite}
+                className="text-2xl mr-4 focus:outline-none"
+                aria-label={isFavorite ? "Quitar de favoritos" : "Agregar a favoritos"}
+              >
+                {isFavorite ? (
+                  <span className="text-yellow-400">★</span>
+                ) : (
+                  <span className="text-white">☆</span>
+                )}
+              </button>
+              <button 
+                onClick={onClose}
+                className="text-white hover:text-gray-200 text-2xl"
+              >
+                &times;
+              </button>
+            </div>
           </div>
         </div>
 

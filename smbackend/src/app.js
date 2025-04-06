@@ -14,13 +14,18 @@ app.use(express.json());
 // Rutas
 const timelineRouter = require('./routes/timeline.routes');
 const authRouter = require('./routes/auth.routes');
+const favoritesRouter = require('./routes/user.routes');
+const philosopherRouter = require('./routes/philosopher.routes');
+
 
 app.get('/', (req, res) => {
     res.send('¡Servidor de Sophomap funcionando!');
 });
 
 app.use('/sophosmap', timelineRouter);
-app.use('/users', authRouter);
+app.use('/auth', authRouter);
+app.use('/users', favoritesRouter);
+app.use('/philosophers', philosopherRouter);
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 4000;
