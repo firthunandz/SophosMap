@@ -15,58 +15,64 @@ import { Spinner } from '../context/Spinner';
 import { AuthProvider } from '../hooks/useAuth';
 import { FavoritesProvider } from '../context/FavoritesContext';
 import PhilosopherInfo from '../components/PhilosopherInfo';
+import { Contact } from '../pages/Contact';
 
 
 export default function AppRouter() {
   return (
-    <AuthProvider>
-      <SpinnerProvider>
-        <FavoritesProvider>
-          <BrowserRouter>
-            <Spinner />
-            <Routes>
-              <Route path="/" element={<Navigate to="/home" replace />} />
+    <BrowserRouter>
+      <AuthProvider>
+        <SpinnerProvider>
+          <FavoritesProvider>
+              <Spinner />
+              <Routes>
+                <Route path="/" element={<Navigate to="/home" replace />} />
 
-              {/* Rutas públicas (siempre accesibles) */}
-              <Route element={<PublicLayout />}>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-              </Route>
+                {/* Rutas públicas (siempre accesibles) */}
+                <Route element={<PublicLayout />}>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
 
-              {/* Rutas compartidas */}
-              <Route 
-                path="/home" 
-                element={
-                  <ConditionalLayout>
-                    <Home />
-                  </ConditionalLayout>
-                }
-                />
-              <Route 
-                path="/sophosmap" 
-                element={
-                  <ConditionalLayout>
-                    <SophosMap />
-                  </ConditionalLayout>
-                }
-                />
-
-              {/* Rutas protegidas */}
-              <Route element={<ProtectedRoute />}>
-                <Route element={<MainLayout />}>
-                  <Route path="/users/profile/:id" element={<Profile />} />
-                  <Route path="/admin" element={<AdminPanel />} />
                 </Route>
-              </Route>
 
-              <Route path="/philosophers/:id" element={<PhilosopherInfo />} />
+                {/* Rutas compartidas */}
+                <Route path="/home" element={
+                    <ConditionalLayout>
+                      <Home />
+                    </ConditionalLayout>
+                  }
+                  />
+                <Route path="/sophosmap" element={
+                    <ConditionalLayout>
+                      <SophosMap />
+                    </ConditionalLayout>
+                  }
+                  />
+                <Route path="/contact" element={
+                    <ConditionalLayout>
+                      <Contact />
+                    </ConditionalLayout>
+                  } 
+                  />
 
-              {/* Ruta para manejar 404 - Página no encontrada */}
-              <Route path="*" element={<div>404 - Página no encontrada</div>} />
-            </Routes>
-          </BrowserRouter>
-        </FavoritesProvider>
-      </SpinnerProvider>
-    </AuthProvider>
+                {/* Rutas protegidas */}
+                <Route element={<ProtectedRoute />}>
+                  <Route element={<MainLayout />}>
+                    <Route path="/users/profile/:id" element={<Profile />} />
+                    <Route element={<AdminRoute />}>
+                      <Route path="/admin" element={<AdminPanel />} />
+                    </Route>
+                  </Route>
+                </Route>
+
+                <Route path="/philosophers/:id" element={<PhilosopherInfo />} />
+
+                {/* Ruta para manejar 404 - Página no encontrada */}
+                <Route path="*" element={<div>404 - Página no encontrada</div>} />
+              </Routes>
+          </FavoritesProvider>
+        </SpinnerProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }

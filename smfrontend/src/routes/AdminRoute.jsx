@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useSpinner } from '../context/SpinnerContext';
 

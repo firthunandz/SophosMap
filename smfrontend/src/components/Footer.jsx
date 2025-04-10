@@ -4,9 +4,12 @@ const Footer = () => {
 
   return (
     <>
-      <footer className="bg-parchment">
+      <footer className="bg-parchment flex justify-between px-20 py-1 font-cinzel font-medium">
+        <Link to={'/contact'}>
+          <p className="hover:font-semibold">Contacto</p>
+        </Link>
         <Link to='https://www.linkedin.com/in/fernando-chiesa/'>
-          <p className="text-end py-1 pr-20 hover:font-semibold">Proyecto hecho por Firthunandz</p>
+          <p className="hover:font-semibold">Proyecto hecho por Firthunandz</p>
         </Link>
       </footer>
     </>

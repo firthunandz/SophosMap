@@ -33,11 +33,11 @@ export default function TimelineItem({ philosopher, side, onSelect }) {
 
       {/* Tarjeta */}
       <div 
-        className={`w-96 p-4 cursor-pointer bg-white shadow rounded relative flex flex-col items-center ${side === "left"  ? "left-[20%] mr-[20%]" : "right-[20%] ml-[20%]"}`}
+        className={`w-96 py-4 cursor-pointer bg-white shadow rounded relative flex flex-col items-center ${side === "left"  ? "left-[20%] mr-[20%]" : "right-[20%] ml-[20%]"}`}
         onClick={async () => {
           try {
             const { data } = await api.get(`/philosophers/${philosopher.id}`);
-            onSelect(data); // ahora mandás el filósofo completo
+            onSelect(data);
           } catch (err) {
             console.error('Error al obtener filósofo completo:', err);
           }
@@ -45,7 +45,7 @@ export default function TimelineItem({ philosopher, side, onSelect }) {
       >      
         <button 
           onClick={toggleFavorite}
-          className={`text-2xl ${isFavorite ? 'text-yellow-400' : 'text-gray-300'} hover:text-yellow-500 transition-colors`}
+          className={`text-3xl absolute top-0 right-2 ${isFavorite ? 'text-yellow-400' : 'text-gray-300'} hover:text-yellow-500 transition-colors`}
         >
           {isFavorite ? '★' : '☆'}
         </button>

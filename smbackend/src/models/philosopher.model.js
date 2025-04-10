@@ -2,10 +2,9 @@ const pool = require('../database/connection');
 
 const getPhilosophers = async ({ era, school, name } = {}) => {
   let query = `
-    SELECT p.id, p.nombre, e.nombre AS era, es.nombre AS escuela
+    SELECT p.id, p.nombre, p.fecha_nacimiento, e.nombre AS era
     FROM philosophers p
     LEFT JOIN eras e ON p.era_id = e.id
-    LEFT JOIN escuelas es ON p.escuela_id = es.id
     WHERE 1=1
   `;
   const values = [];
@@ -24,6 +23,8 @@ const getPhilosophers = async ({ era, school, name } = {}) => {
     values.push(`%${name}%`);
     query += ` AND p.nombre ILIKE $${values.length}`;
   }
+
+  query += ` ORDER BY p.id ASC`;
 
   const res = await pool.query(query, values);
   return res.rows;
@@ -73,63 +74,7 @@ const getPhilosopherById = async (id) => {
   return philosopher;
 }
 
-const getPhilosopherByName = async (name) => {
-  try {
-    
-    const query = `
-    SELECT 
-    p.*, 
-    e.nombre AS era,
-    es.nombre AS escuela,
-    r.nombre AS religion
-    FROM philosophers p
-    LEFT JOIN eras e ON p.era_id = e.id
-    LEFT JOIN escuelas es ON p.escuela_id = es.id
-    LEFT JOIN religiones r ON p.religion_id = r.id
-    WHERE p.nombre = $1
-    `;
-
-    const { rows } = await pool.query(query, [name]);
-  const philosopher = rows[0];
-  
-  if (!philosopher) return null;
-
-  const id = philosopher.id;
-  
-  const relatedQueries = {
-    ocupacion: "SELECT ocupacion FROM occupations WHERE philosopher_id = $1",
-    intereses: "SELECT interest FROM interests WHERE philosopher_id = $1",
-    conceptos: "SELECT concepto FROM concepts WHERE philosopher_id = $1",
-    influencias: "SELECT influencia FROM influences WHERE philosopher_id = $1",
-    alumnos: "SELECT student_name FROM students WHERE philosopher_id = $1",
-    maestros: "SELECT teacher_name FROM teachers WHERE philosopher_id = $1",
-    legado: "SELECT legado FROM legacies WHERE philosopher_id = $1",
-    citas: "SELECT cita FROM quotes WHERE philosopher_id = $1",
-    libros: "SELECT titulo, descripcion, idioma, estado FROM books WHERE philosopher_id = $1",
-    obras: "SELECT titulo, descripcion FROM works WHERE philosopher_id = $1"
-  };
-
-  // Cargar cada relación
-  for (const key in relatedQueries) {
-    const { rows } = await pool.query(relatedQueries[key], [id]);
-    if (key === 'libros' || key === 'obras') {
-      philosopher[key] = rows;
-    } else if (key === 'citas') {
-      philosopher[key] = rows.map(row => row.cita);
-    } else {
-      philosopher[key] = rows.map(row => Object.values(row)[0]);
-    }
-  }
-  
-  return philosopher;
-} catch (error) {
-  console.error("Error en getPhilosopherByName:", error);
-  throw error;
-}
-};
-
 module.exports = {
   getPhilosophers,
   getPhilosopherById,
-  getPhilosopherByName
 };
