@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middlewares/verify.jwt');
-const { userProfile, getFavorites, addFavorite, removeFavorite } = require('../controllers/user.controller');
+const { userProfile } = require('../controllers/user.controller');
+const { getFavorites, addFavorite, removeFavorite } = require('../controllers/favorites.controller');
 
 router.get('/profile/:id', verifyToken, userProfile);
 router.get('/favorites', verifyToken, getFavorites);

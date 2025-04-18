@@ -1,26 +1,31 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import api from '../services/api';
+import { useSpinner } from './SpinnerContext';
 
 const FavoritesContext = createContext();
 
 export const FavoritesProvider = ({ children }) => {
   const [favorites, setFavorites] = useState([]);
+  const { showSpinner, hideSpinner } = useSpinner();
+
+  const fetchFavorites = useCallback(async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    try {
+      showSpinner();
+      const res = await api.get('/users/favorites');
+      setFavorites(res.data);
+    } catch (error) {
+      console.error('Error al obtener favoritos:', error);
+    } finally {
+      hideSpinner();
+    }
+  }, [showSpinner, hideSpinner]);
 
   useEffect(() => {
-    const fetchFavorites = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) return;
-
-      try {
-        const res = await api.get('/users/favorites');
-        setFavorites(res.data);
-      } catch (error) {
-        console.error('Error al obtener favoritos:', error);
-      }
-    };
-
     fetchFavorites();
-  }, []);
+  }, [fetchFavorites]);
 
   const addFavorite = async (philosopher) => {
     try {
@@ -41,7 +46,7 @@ export const FavoritesProvider = ({ children }) => {
   };
 
   return (
-    <FavoritesContext.Provider value={{ favorites, addFavorite, removeFavorite }}>
+    <FavoritesContext.Provider value={{ favorites, addFavorite, removeFavorite, fetchFavorites }}>
       {children}
     </FavoritesContext.Provider>
   );

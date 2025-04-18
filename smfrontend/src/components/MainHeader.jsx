@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import Magnifier from './icons/magnifier';
 
 const MainHeader = () => {
   const { user, logout } = useAuth();
@@ -24,6 +25,9 @@ const MainHeader = () => {
         </h1>
 
         <div className="flex items-center gap-4">
+
+          <Magnifier />
+          
           <Link 
             to={`/users/profile/${user.id}`}
             className="px-4 py-2 bg-antique-gold/80 rounded hover:bg-antique-gold transition"

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import Magnifier from './icons/magnifier';
 
 export default function PublicHeader() {
   return (
@@ -9,6 +10,9 @@ export default function PublicHeader() {
         </h1>
         
         <div className="flex items-center gap-4">
+
+          <Magnifier />
+  
           <Link 
             to="/login" 
             className="px-4 py-2 bg-antique-gold rounded hover:bg-deep-sepia transition"

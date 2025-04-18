@@ -16,6 +16,8 @@ import { AuthProvider } from '../hooks/useAuth';
 import { FavoritesProvider } from '../context/FavoritesContext';
 import PhilosopherInfo from '../components/PhilosopherInfo';
 import { Contact } from '../pages/Contact';
+import ReviewsPage from '../pages/Reviews';
+import { SearchProvider } from '../context/SearchContext';
 
 
 export default function AppRouter() {
@@ -23,7 +25,8 @@ export default function AppRouter() {
     <BrowserRouter>
       <AuthProvider>
         <SpinnerProvider>
-          <FavoritesProvider>
+          <SearchProvider>
+            <FavoritesProvider>
               <Spinner />
               <Routes>
                 <Route path="/" element={<Navigate to="/home" replace />} />
@@ -41,19 +44,25 @@ export default function AppRouter() {
                       <Home />
                     </ConditionalLayout>
                   }
-                  />
+                />
                 <Route path="/sophosmap" element={
                     <ConditionalLayout>
                       <SophosMap />
                     </ConditionalLayout>
                   }
-                  />
+                />
                 <Route path="/contact" element={
                     <ConditionalLayout>
                       <Contact />
                     </ConditionalLayout>
                   } 
-                  />
+                />
+                <Route path="/reviews" element={
+                    <ConditionalLayout>
+                      <ReviewsPage />
+                    </ConditionalLayout>
+                  } 
+                />
 
                 {/* Rutas protegidas */}
                 <Route element={<ProtectedRoute />}>
@@ -70,7 +79,8 @@ export default function AppRouter() {
                 {/* Ruta para manejar 404 - Página no encontrada */}
                 <Route path="*" element={<div>404 - Página no encontrada</div>} />
               </Routes>
-          </FavoritesProvider>
+            </FavoritesProvider>
+          </SearchProvider>
         </SpinnerProvider>
       </AuthProvider>
     </BrowserRouter>

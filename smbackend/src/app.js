@@ -16,6 +16,7 @@ const timelineRouter = require('./routes/timeline.routes');
 const authRouter = require('./routes/auth.routes');
 const favoritesRouter = require('./routes/user.routes');
 const philosopherRouter = require('./routes/philosopher.routes');
+const reviewsRouter = require('./routes/reviews.routes');
 
 app.get('/', (req, res) => {
     res.send('¡Servidor de Sophomap funcionando!');
@@ -25,6 +26,7 @@ app.use('/sophosmap', timelineRouter);
 app.use('/auth', authRouter);
 app.use('/users', favoritesRouter);
 app.use('/philosophers', philosopherRouter);
+app.use('/reviews', reviewsRouter);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
