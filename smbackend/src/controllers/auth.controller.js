@@ -4,7 +4,8 @@ const { query } = require('../database/connection');
 
 const saltRounds = 10;
 const jwtSecret = process.env.JWT_SECRET;
-const tokenExpiration = '8h';
+const tokenExpiration = '15m';
+const refreshExpiration = '30d';
 
 const generateToken = (user) => {
   return jwt.sign(
@@ -23,7 +24,7 @@ const generateRefreshToken = (user) => {
   return jwt.sign(
     { id: user.id },
     process.env.REFRESH_SECRET,
-    { expiresIn: '7d' }
+    { expiresIn: refreshExpiration }
   );
 };
 
@@ -60,7 +61,12 @@ const refreshAccessToken = async (req, res) => {
 
     const newAccessToken = generateToken(user);
     res.json({ token: newAccessToken, expiresIn: tokenExpiration });
+    
   } catch (err) {
+    if (err.name === 'TokenExpiredError') {
+      return res.status(403).json({ error: 'Refresh token expirado' });
+    }
+
     console.error('Error al refrescar token:', err);
     res.status(403).json({ error: 'Refresh token inválido o expirado' });
   }
@@ -104,7 +110,7 @@ const userLogin = async (req, res) => {
       httpOnly: true,
       secure: true,
       sameSite: 'Strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000
+      maxAge: 30 * 24 * 60 * 60 * 1000
     });
 
     res.json({
@@ -157,7 +163,7 @@ const userRegister = async (req, res) => {
       httpOnly: true,
       secure: true,
       sameSite: 'Strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000
+      maxAge: 30 * 24 * 60 * 60 * 1000
     });
 
     res.status(201).json({

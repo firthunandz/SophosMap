@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../context/authContext';
 import { useSpinner } from '../context/SpinnerContext';
 
 export default function ProtectedRoute() {
   const { showSpinner, hideSpinner } = useSpinner();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, authError } = useAuth();
 
   useEffect(() => {
     if (isLoading) {
@@ -15,8 +15,8 @@ export default function ProtectedRoute() {
     }
   }, [isLoading]);
 
-  if (!isAuthenticated && !isLoading) {
-    return <Navigate to="/home" replace />;
+  if (!isAuthenticated && !isLoading && !authError) {
+    return <Navigate to="/login" replace />;
   }
 
   return <Outlet />;

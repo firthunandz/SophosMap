@@ -1,11 +1,11 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../context/authContext';
 import { useSpinner } from '../context/SpinnerContext';
 
 export default function AdminRoute() {
   const { showSpinner, hideSpinner } = useSpinner();
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading, authError } = useAuth();
 
   useEffect(() => {
     if (isLoading) {
@@ -15,8 +15,8 @@ export default function AdminRoute() {
     }
   }, [isLoading]);
 
-  if (!isLoading && (!isAuthenticated || !user || user.role !== 'admin')) {
-    return <Navigate to="/" replace />;
+  if (!isLoading && !authError && (!isAuthenticated || !user || user.role !== 'admin')) {
+    return <Navigate to="/login" replace />;
   }
 
   return <Outlet />;

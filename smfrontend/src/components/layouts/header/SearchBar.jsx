@@ -1,47 +1,53 @@
-import { useContext, useState } from 'react';
-import { SearchContext } from '../context/SearchContext';
-import { useSpinner } from '../context/SpinnerContext';
-import api from '../services/api';
+import { useContext, useState } from "react";
+import { SearchContext } from "../../../context/SearchContext";
+import { useSpinner } from "../../../context/SpinnerContext";
+import api from "../../../services/api";
+import Button from "../../ui/Button";
+import SearchInput from "../../ui/SearchInput";
 
 const SearchBar = () => {
-  const { visible, toggleSearchBar, setResults } = useContext(SearchContext);
-  const [query, setQuery] = useState('');
-  const { showSpinner, hideSpinner } = useSpinner();
+ const { visible, toggleSearchBar, setResults } = useContext(SearchContext);
+ const [query, setQuery] = useState("");
+ const { showSpinner, hideSpinner } = useSpinner();
 
-  const handleSearch = async () => {
-    showSpinner();
-    try {
-      const params = new URLSearchParams({
-        q: query
-      });
+ const handleSearch = async () => {
+  showSpinner();
+  try {
+   const params = new URLSearchParams({
+    q: query,
+   });
 
-      const { data } = await api.get(`/philosophers/search?${params.toString()}`);
-      setResults(data);
-    } catch (err) {
-      console.error('Error en búsqueda:', err);
-    } finally {
-      hideSpinner();
-    }
-  };
+   const { data } = await api.get(`/philosophers/search?${params.toString()}`);
+   setResults(data);
+  } catch (err) {
+   console.error("Error en búsqueda:", err);
+  } finally {
+   hideSpinner();
+  }
+ };
 
-  if (!visible) return null;
+ if (!visible) return null;
 
-  return (
-    <div className="fixed top-[60px] w-full bg-white shadow z-50 px-4 py-3 flex items-center gap-2">
-      <input
-        type="text"
-        placeholder="Buscar por nombre, año, escuela..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-        className="flex-grow border border-gray-300 p-2 rounded"
-      />
-      <button onClick={handleSearch} className="bg-blue-600 text-white px-4 py-2 rounded">Buscar</button>
+ return (
+  <div className="fixed top-[60px] w-full bg-parchment shadow z-50 px-6 py-4 flex items-center gap-3 border-b border-warm-brown">
+    <SearchInput
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+    />
 
-      <button onClick={toggleSearchBar} className="text-gray-600 hover:text-red-500 text-xl font-bold ml-2">✕</button>
+    <Button onClick={handleSearch} variant="gold">
+      Buscar
+    </Button>
 
-    </div>
-  );
+    <button
+      onClick={toggleSearchBar}
+      className="text-deep-sepia hover:text-warm-brown text-2xl font-bold px-2 transition"
+    >
+      ✕
+    </button>
+  </div>
+ );
 };
 
 export default SearchBar;

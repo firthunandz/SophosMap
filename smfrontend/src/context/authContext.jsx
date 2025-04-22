@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const AuthContext = createContext();
 
@@ -7,8 +7,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
-
+  const [authError, setAuthError] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -22,14 +22,17 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const handleAuthChange = () => {
-      logout();
-      navigate('/');
+    const handleAuthExpired = (e) => {
+      setAuthError(e.detail);
     };
-
-    window.addEventListener('authChange', handleAuthChange);
-    return () => window.removeEventListener('authChange', handleAuthChange);
+  
+    window.addEventListener('authExpired', handleAuthExpired);
+    return () => window.removeEventListener('authExpired', handleAuthExpired);
   }, []);
+
+  useEffect(() => {
+    setAuthError(null);
+  }, [location.pathname]);
 
   const login = (token, userData) => {
     localStorage.setItem('token', token);
@@ -46,7 +49,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, isLoading, login, logout, authError, setAuthError }}>
       {children}
     </AuthContext.Provider>
   );

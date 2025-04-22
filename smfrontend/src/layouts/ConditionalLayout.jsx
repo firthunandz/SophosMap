@@ -1,18 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
+// import { useEffect, useState } from 'react';
+import { useAuth } from '../context/authContext';
 import PublicLayout from './PublicLayout';
 import MainLayout from './MainLayout';
 
 const ConditionalLayout = ({ children }) => {
-  // const [layoutVersion, setLayoutVersion] = useState(0);
   const { isAuthenticated } = useAuth();
-
-  // useEffect(() => {
-  //   const handler = () => setLayoutVersion(v => v + 1);
-  //   window.addEventListener('authChange', handler);
-  //   return () => window.removeEventListener('authChange', handler);
-  // }, []);
-
+  
   return isAuthenticated ? (
     <MainLayout>{children}</MainLayout>
   ) : (
@@ -21,3 +14,11 @@ const ConditionalLayout = ({ children }) => {
 };
 
 export default ConditionalLayout;
+
+// const [layoutVersion, setLayoutVersion] = useState(0);
+
+// useEffect(() => {
+//   const handler = () => setLayoutVersion(v => v + 1);
+//   window.addEventListener('authChange', handler);
+//   return () => window.removeEventListener('authChange', handler);
+// }, []);

@@ -12,9 +12,9 @@ import ProtectedRoute from './ProtectedRoute';
 import AdminRoute from './AdminRoute';
 import { SpinnerProvider } from '../context/SpinnerContext';
 import { Spinner } from '../context/Spinner';
-import { AuthProvider } from '../hooks/useAuth';
+import { AuthProvider } from '../context/authContext';
 import { FavoritesProvider } from '../context/FavoritesContext';
-import PhilosopherInfo from '../components/PhilosopherInfo';
+import ModalPhiloInfo from '../components/modals/ModalPhiloInfo';
 import { Contact } from '../pages/Contact';
 import ReviewsPage from '../pages/Reviews';
 import { SearchProvider } from '../context/SearchContext';
@@ -35,7 +35,6 @@ export default function AppRouter() {
                 <Route element={<PublicLayout />}>
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
-
                 </Route>
 
                 {/* Rutas compartidas */}
@@ -74,7 +73,7 @@ export default function AppRouter() {
                   </Route>
                 </Route>
 
-                <Route path="/philosophers/:id" element={<PhilosopherInfo />} />
+                <Route path="/philosophers/:id" element={<ModalPhiloInfo />} />
 
                 {/* Ruta para manejar 404 - Página no encontrada */}
                 <Route path="*" element={<div>404 - Página no encontrada</div>} />

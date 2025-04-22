@@ -13,9 +13,13 @@ const Footer = () => {
             <p className="hover:font-semibold">Reseñas</p>
           </Link>
         </section>
-        <Link to='https://www.linkedin.com/in/fernando-chiesa/'>
+        <a 
+          href="https://www.linkedin.com/in/fernando-chiesa/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
           <p className="hover:font-semibold">Proyecto hecho por Firthunandz</p>
-        </Link>
+        </a>
       </footer>
     </>
   );

@@ -25,7 +25,7 @@ const getAllReviews = async (req, res) => {
   try {
     const result = await db.query(
       `SELECT r.id, r.text, r.created_at, 
-              u.username AS user_name,
+              u.nickname AS user_name,
               r.name AS guest_name
        FROM reviews r
        LEFT JOIN users u ON r.user_id = u.id

@@ -1,7 +1,7 @@
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../context/authContext';
 import { Link } from 'react-router-dom';
 import bgImg from '../assets/images/papiro.jpg';
-import Timeline from '../components/Timeline';
+import Timeline from '../components/timeline/Timeline';
 
 export default function SophosMap() {
   const { user } = useAuth();

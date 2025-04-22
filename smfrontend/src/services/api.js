@@ -21,10 +21,14 @@ api.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;
-    console.log('Error status:', error.response?.status)
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
+
+      if (error.response?.data?.error === 'jwt expired') {
+        console.warn('Token expirado, intentando refresh...');
+      }
+
       try {
         const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/auth/refresh`, {}, {
           withCredentials: true
@@ -32,11 +36,13 @@ api.interceptors.response.use(
 
         localStorage.setItem('token', data.token);
         originalRequest.headers['Authorization'] = `Bearer ${data.token}`;
-
         return api(originalRequest);
       } catch (refreshError) {
         localStorage.removeItem('token');
-        window.dispatchEvent(new Event('authChange'));
+        window.dispatchEvent(new CustomEvent('authExpired', {
+          detail: 'Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.'
+        }));
+        // window.dispatchEvent(new Event('authChange'));
         return Promise.reject(refreshError);
       }
     }
