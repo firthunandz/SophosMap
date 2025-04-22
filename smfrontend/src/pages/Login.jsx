@@ -55,6 +55,10 @@ export default function Login() {
       error={error}
       linkText="¿No tienes cuenta? Registrate"
       linkTo="/register"
+      extraLink={{
+        to: '/forgot-password',
+        label: '¿Olvidaste tu contraseña?'
+      }}
     />
   );
 };

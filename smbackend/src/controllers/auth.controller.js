@@ -1,6 +1,8 @@
+const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { query } = require('../database/connection');
+const sendEmail = require('../utils/sendEmail');
 
 const saltRounds = 10;
 const jwtSecret = process.env.JWT_SECRET;
@@ -178,8 +180,92 @@ const userRegister = async (req, res) => {
   }
 };
 
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const result = await query('SELECT * FROM users WHERE email = $1', [email]);
+    const user = result.rows[0];
+
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiration = new Date(Date.now() + 60 * 60 * 1000);
+
+    await query(
+      'UPDATE users SET reset_token = $1, reset_token_expires = $2 WHERE email = $3',
+      [token, expiration, email]
+    );
+
+    const resetLink = `http://localhost:5173/reset-password?token=${token}&email=${email}`;
+    const message = `
+      <div style="font-family: sans-serif; line-height: 1.5; color: #333;">
+        <h2>Hola ${user.nickname || user.username},</h2>
+        <p>Has solicitado restablecer tu contraseña en <strong>Sophos Map</strong>.</p>
+        <p>Hacé clic en el siguiente botón para crear una nueva contraseña:</p>
+        <p>
+          <a href="${resetLink}" style="background-color: #b88e2f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+            Restablecer contraseña
+          </a>
+        </p>
+        <p>O copia y pega este enlace en tu navegador:</p>
+        <p><a href="${resetLink}">${resetLink}</a></p>
+        <hr/>
+        <p style="font-size: 0.9em; color: #888;">
+          Si vos no solicitaste este cambio, ignorá este mensaje. El enlace expirará en 1 hora.
+        </p>
+      </div>
+    `;
+
+    await sendEmail({
+      to: email,
+      subject: 'Recuperación de contraseña - Sophos Map',
+      html: message
+    });
+
+    res.json({ message: 'Enlace para restablecer la contraseña enviado al correo electrónico' });
+
+  } catch (error) {
+    console.error('Error en forgotPassword:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { email, token, newPassword } = req.body;
+
+  try {
+    const result = await query(
+      'SELECT * FROM users WHERE email = $1 AND reset_token = $2 AND reset_token_expires > NOW()',
+      [email, token]
+    );
+
+    const user = result.rows[0];
+    if (!user) {
+      return res.status(400).json({ error: 'Token inválido o expirado' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await query(
+      'UPDATE users SET password_hash = $1, reset_token = NULL, reset_token_expires = NULL WHERE email = $2',
+      [hashedPassword, email]
+    );
+
+    res.json({ message: 'Contraseña restablecida correctamente' });
+
+  } catch (error) {
+    console.error('Error en resetPassword:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
+
 module.exports = {
   userLogin,
   userRegister,
-  refreshAccessToken
+  refreshAccessToken,
+  forgotPassword,
+  resetPassword
 };

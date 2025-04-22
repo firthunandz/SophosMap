@@ -10,6 +10,7 @@ export default function AuthForm({
   error,
   linkText,
   linkTo,
+  extraLink
 }) {
   return (
     <div className="w-full max-w-md p-8 space-y-8 bg-ivory rounded-lg shadow my-10">
@@ -49,6 +50,14 @@ export default function AuthForm({
         <Link to={linkTo} className="text-ink-black hover:text-ink-black/80 hover:underline">
           {linkText}
         </Link>
+        </div>
+      )}
+
+      {extraLink && (
+        <div className="text-center mt-2">
+          <Link to={extraLink.to} className="text-sm text-warm-gray hover:underline">
+            {extraLink.label}
+          </Link>
         </div>
       )}
     </div>

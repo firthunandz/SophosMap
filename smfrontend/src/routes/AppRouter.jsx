@@ -18,7 +18,8 @@ import ModalPhiloInfo from '../components/modals/ModalPhiloInfo';
 import { Contact } from '../pages/Contact';
 import ReviewsPage from '../pages/Reviews';
 import { SearchProvider } from '../context/SearchContext';
-
+import ForgotPassword from '../pages/ForgotPassword';
+import ResetPassword from '../pages/ResetPassword';
 
 export default function AppRouter() {
   return (
@@ -35,6 +36,8 @@ export default function AppRouter() {
                 <Route element={<PublicLayout />}>
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
                 </Route>
 
                 {/* Rutas compartidas */}
@@ -74,6 +77,7 @@ export default function AppRouter() {
                 </Route>
 
                 <Route path="/philosophers/:id" element={<ModalPhiloInfo />} />
+
 
                 {/* Ruta para manejar 404 - Página no encontrada */}
                 <Route path="*" element={<div>404 - Página no encontrada</div>} />
