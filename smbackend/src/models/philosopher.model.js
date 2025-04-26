@@ -2,9 +2,16 @@ const pool = require('../database/connection');
 
 const getPhilosophers = async ({ era, school, name } = {}) => {
   let query = `
-    SELECT p.id, p.nombre, p.fecha_nacimiento, e.nombre AS era
+    SELECT
+      p.id,
+      p.nombre,
+      p.fecha_nacimiento,
+      p.fecha_texto,
+      e.nombre AS era
     FROM philosophers p
-    LEFT JOIN eras e ON p.era_id = e.id
+    LEFT JOIN eras    e  ON p.era_id       = e.id
+    LEFT JOIN schools es ON p.escuela_id   = es.id
+    LEFT JOIN religions r ON p.religion_id = r.id
     WHERE 1=1
   `;
   const values = [];
@@ -24,7 +31,7 @@ const getPhilosophers = async ({ era, school, name } = {}) => {
     query += ` AND p.nombre ILIKE $${values.length}`;
   }
 
-  query += ` ORDER BY p.id ASC`;
+  query += ` ORDER BY p.fecha_nacimiento ASC NULLS LAST`;
 
   const res = await pool.query(query, values);
   return res.rows;
@@ -33,14 +40,15 @@ const getPhilosophers = async ({ era, school, name } = {}) => {
 const getPhilosopherById = async (id) => {
   const baseQuery = `
     SELECT 
-      p.*, 
-      e.nombre AS era,
-      es.nombre AS escuela,
-      r.nombre AS religion
+      p.*,
+      p.fecha_texto,
+      e.nombre   AS era,
+      es.nombre  AS escuela,
+      r.nombre   AS religion
     FROM philosophers p
-    LEFT JOIN eras e ON p.era_id = e.id
-    LEFT JOIN schools es ON p.escuela_id = es.id
-    LEFT JOIN religions r ON p.religion_id = r.id
+    LEFT JOIN eras      e ON p.era_id       = e.id
+    LEFT JOIN schools   es ON p.escuela_id   = es.id
+    LEFT JOIN religions r ON p.religion_id   = r.id
     WHERE p.id = $1
   `;
   const { rows } = await pool.query(baseQuery, [id]);

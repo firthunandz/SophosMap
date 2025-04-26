@@ -2,11 +2,12 @@ const pool = require('../database/connection');
 
 const timeline = async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM philosophers ORDER BY id ASC");
+    const result = await pool.query("SELECT * FROM philosophers ORDER BY fecha_nacimiento ASC NULLS LAST");
     res.json(result.rows);
   } catch (error) {
-    console.error("Error al obtener filósofos:", error);
-    res.status(500).json({ error: "Error al obtener filósofos" });
+    console.error("Error SQL al obtener filósofos:", error.message);
+    console.error(error.stack);
+    res.status(500).json({ error: error.message });
   }
 };
 
