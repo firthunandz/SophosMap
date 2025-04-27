@@ -6,6 +6,7 @@ import { useSpinner } from '../context/SpinnerContext';
 import api from '../services/api';
 import AuthForm from '../components/forms/AuthForm';
 
+
 export default function Login() {
   const { login } = useAuth();
   const { showSpinner, hideSpinner } = useSpinner();
@@ -30,10 +31,13 @@ export default function Login() {
   const handleLogin = async (formData) => {
     try {
       showSpinner();
-      console.log('Datos enviados al login:', formData);
       const { data } = await api.post('/auth/login', formData);
-      login(data.token, data.user);
-      navigate('/home');
+      if (!data.user.verified) {
+        navigate('/check-email');
+      } else {
+        login(data.token, data.user);
+        navigate('/home');
+      }
     } catch (err) {
       console.error('Error detallado:', {
         Code: err.code,

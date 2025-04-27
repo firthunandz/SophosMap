@@ -20,6 +20,8 @@ import ReviewsPage from '../pages/Reviews';
 import { SearchProvider } from '../context/SearchContext';
 import ForgotPassword from '../pages/ForgotPassword';
 import ResetPassword from '../pages/ResetPassword';
+import CheckEmail from '../pages/CheckEmail';
+import VerifyEmail from '../pages/VerifyEmail';
 
 export default function AppRouter() {
   return (
@@ -38,6 +40,8 @@ export default function AppRouter() {
                   <Route path="/register" element={<Register />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
+                  <Route path="/check-email" element={<CheckEmail />} />
+                  <Route path="/verify-email" element={<VerifyEmail />} />
                 </Route>
 
                 {/* Rutas compartidas */}

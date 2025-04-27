@@ -76,7 +76,7 @@ export default function Register() {
     try {
       showSpinner();
       const { data: response } = await api.post('/auth/register', data);
-      navigate('/login');
+      navigate('/check-email');
     } catch (err) {
       console.error('Error en registro:', err.response?.data || err.message);
       setError(err.response?.data?.error || 'Error al registrar usuario');
