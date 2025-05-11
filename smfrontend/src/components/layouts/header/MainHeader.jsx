@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../context/authContext';
 import Magnifier from '../../icons/Magnifier';
 import Button from '../../ui/Button';
@@ -6,6 +6,9 @@ import Button from '../../ui/Button';
 const MainHeader = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const showMagnifier = location.pathname === "/sophosmap" || location.pathname.match(/^\/users\/profile\/\d+/);
 
   const handleLogOut = () => {
     logout();
@@ -27,7 +30,9 @@ const MainHeader = () => {
 
         <div className="flex items-center gap-4">
 
-          <Magnifier />
+          {showMagnifier && (
+            <Magnifier />
+          )}
           
           {user.role === "admin" && (
             <Button as={Link} to="/admin" variant="gold">

@@ -4,7 +4,7 @@ const pool = require('../database/connection');
 const getAllPhilosophers = async (req, res) => {
   const { era, school, search } = req.query;
   try {
-    const philosophers = await philosopherModel.getPhilosophers({ 
+    const philosophers = await philosopherModel.modelGetPhilosophers({ 
       era, 
       school, 
       name: search 
@@ -17,9 +17,9 @@ const getAllPhilosophers = async (req, res) => {
   }
 }
 
-const handleGetPhilosopherById = async (req, res) => {
+const getPhilosopherById = async (req, res) => {
   try {
-    const philosopher = await philosopherModel.getPhilosopherById(req.params.id);
+    const philosopher = await philosopherModel.modelGetPhilosopherById(req.params.id);
     if (!philosopher) {
       return res.status(404).json({ error: 'Filósofo no encontrado' });
     }
@@ -28,46 +28,41 @@ const handleGetPhilosopherById = async (req, res) => {
     console.error('Error al obtener filósofo:', err);
     res.status(500).json({ error: 'Error al obtener el filósofo' });
   }
-}
+};
 
 const searchPhilosophers = async (req, res) => {
-  const { q = '' } = req.query;
-
+  const { q = '', eras, religions, schools } = req.query;
   try {
-    const queryText = `
-      SELECT DISTINCT ON (p.id) p.*, e.nombre AS era, s.nombre AS escuela
-      FROM philosophers p
-      LEFT JOIN eras e ON p.era_id = e.id
-      LEFT JOIN schools s ON p.escuela_id = s.id
-      LEFT JOIN religions r ON p.religion_id = r.id
-      LEFT JOIN concepts c ON c.philosopher_id = p.id
-      WHERE (
-        unaccent(LOWER(p.nombre)) LIKE unaccent(LOWER($1))
-        OR unaccent(LOWER(p.lugar_nacimiento)) LIKE unaccent(LOWER($1))
-        OR unaccent(LOWER(p.lugar_muerte)) LIKE unaccent(LOWER($1))
-        OR CAST(p.fecha_nacimiento AS TEXT) LIKE $1
-        OR CAST(p.fecha_muerte AS TEXT) LIKE $1
-        OR unaccent(LOWER(e.nombre)) LIKE unaccent(LOWER($1))
-        OR unaccent(LOWER(s.nombre)) LIKE unaccent(LOWER($1))
-        OR unaccent(LOWER(r.nombre)) LIKE unaccent(LOWER($1))
-        OR unaccent(LOWER(c.concepto)) LIKE unaccent(LOWER($1))
-      )
-    `;
-
-    const values = [`%${q}%`];
-
-    const result = await pool.query(queryText, values);
-    res.json(result.rows);
+    const philosophers = await philosopherModel.modelSearchPhilosophers({
+      q,
+      eras,
+      religions,
+      schools
+    });
+    res.json(philosophers);
   } catch (err) {
     console.error('Error en búsqueda de filósofos:', err);
     res.status(500).json({ error: 'Error al buscar filósofos' });
   }
 };
 
+const getPhilosophersByEra = async (req, res) => {
+  const { q = '', eras } = req.query;
+  console.log('Req.query: '+ req.query); //debug2
+  try {
+    const philosophers = await philosopherModel.modelGetPhilosophersByEra(q, eras);
+    res.json(philosophers);
+  } catch (err) {
+    console.error("Error al obtener filósofos:", err);
+    res.status(500).json({ error: "Error al obtener filósofos" });
+  }
+};
+
 module.exports = {
   getAllPhilosophers,
-  handleGetPhilosopherById,
-  searchPhilosophers
+  getPhilosopherById,
+  searchPhilosophers,
+  getPhilosophersByEra
 }
 
     // const {
