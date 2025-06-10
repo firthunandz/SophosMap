@@ -25,14 +25,14 @@ export default function ModalContent({ philosopher }) {
         <ListField label="Intereses" items={philosopher.intereses} />
         <ListField label="Conceptos principales" items={philosopher.conceptos} />
         <ListField label="Influencias" items={philosopher.influencias} />
-        <ListField label="Estudiantes" items={philosopher.alumnos} />
+        <ListField label="Estudiantes" items={philosopher.estudiantes} />
         <ListField label="Maestros" items={philosopher.maestros} />
       </div>
 
       <div className="md:col-span-2">
-        <ListField label="Citas famosas" items={philosopher.citas} />
-        <WorksField label="Libros" obras={philosopher.libros} />
-        <WorksField label="Obras destacadas" obras={philosopher.obras} />
+        <ListField label="Citas famosas" items={philosopher.quotes} />
+        <WorksField label="Libros" obras={philosopher.books} />
+        <WorksField label="Obras destacadas" obras={philosopher.works} />
       </div>
     </div>
   );

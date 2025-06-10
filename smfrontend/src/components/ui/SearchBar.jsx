@@ -72,26 +72,6 @@ const SearchBar = () => {
     ? setList(list.filter(x => x !== value))
     : setList([...list, value]);
 
-  // const handleEraChange = (event) => {
-  //   const selectedEra = event.target.value;
-  //   if (selectedEra && !selectedEras.includes(selectedEra)) {
-  //     setSelectedEras((prev) => [...prev, selectedEra]);
-  //   }
-  // };
-
-  // const removeEra = (era) => {
-  //   setSelectedEras((prev) => prev.filter((e) => e !== era));
-  // };
-
-  // const handleReligionChange = (e) => {
-  //   const v = e.target.value;
-  //   if (v && !selectedReligions.includes(v)) setSelectedReligions(prev => [...prev, v]);
-  // };
-
-  // const removeReligion = (r) => {
-  //   setSelectedReligions(prev => prev.filter(x => x !== r));
-  // }
-
   const clearFilters = () => {
     setSelectedEras([]);
     setSelectedReligions([]);
@@ -134,22 +114,6 @@ const SearchBar = () => {
 
         {/* Badges debajo del SearchInput */}
         <div className="mt-2 flex gap-2 flex-wrap">
-          {/* {selectedEras.map((era, idx) => (
-            <span
-              key={idx}
-              className="bg-dusty-rose text-white text-xs px-3 py-1 rounded-full cursor-pointer"
-              onClick={() => removeEra(era)}
-            >
-              {era} ✕
-            </span>
-          ))}
-          {selectedReligions.map((rel,i) => (
-            <span
-              key={`rel-${i}`}
-              className="bg-dusty-rose text-white text-xs px-3 py-1 rounded-full cursor-pointer"
-              onClick={() => removeReligion(rel)}
-            >{rel} ✕</span>
-          ))} */}
            {selectedEras.map((e,i) => (
             <span key={i}
               className="bg-dusty-rose text-white text-xs px-3 py-1 rounded-full cursor-pointer"

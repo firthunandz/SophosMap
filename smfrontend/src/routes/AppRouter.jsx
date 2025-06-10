@@ -22,6 +22,9 @@ import ForgotPassword from '../pages/ForgotPassword';
 import ResetPassword from '../pages/ResetPassword';
 import CheckEmail from '../pages/CheckEmail';
 import VerifyEmail from '../pages/VerifyEmail';
+import PhilosophersPage from '../pages/PhilosophersPage';
+import PhilosopherDetail from '../pages/PhilosopherDetail';
+import NewPhilosopher from '../pages/NewPhilosopher';
 
 export default function AppRouter() {
   return (
@@ -76,6 +79,9 @@ export default function AppRouter() {
                     <Route path="/users/profile/:id" element={<Profile />} />
                     <Route element={<AdminRoute />}>
                       <Route path="/admin" element={<AdminPanel />} />
+                      <Route path="/admin/philosophers" element={<PhilosophersPage />} />
+                      <Route path="/admin/philosophers/:id" element={<PhilosopherDetail />} />
+                      <Route path="/admin/philosophers/new" element={<NewPhilosopher />} />
                     </Route>
                   </Route>
                 </Route>

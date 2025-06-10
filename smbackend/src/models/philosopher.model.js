@@ -1,13 +1,25 @@
 const pool = require('../database/connection');
 
 const modelGetPhilosophers = async ({ era, school, name } = {}) => {
-  let query = `
+  let query = 
+  `
     SELECT
       p.id,
       p.nombre,
       p.fecha_nacimiento,
       p.fecha_texto,
-      e.nombre AS era
+      e.nombre AS era,
+
+      -- Campo virtual para ordenar cronológicamente (año con signo):
+      CASE
+        WHEN p.fecha_nacimiento IS NOT NULL
+          THEN EXTRACT(YEAR FROM p.fecha_nacimiento)::int
+        WHEN p.fecha_nacimiento IS NULL
+          AND p.fecha_texto ~ '\\d+\\s*a\\.C\\.'  -- si tiene “a.C.”
+          THEN -(regexp_replace(p.fecha_texto, '\\D', '', 'g')::int)
+        ELSE NULL
+      END AS sort_year
+
     FROM philosophers p
     LEFT JOIN eras    e  ON p.era_id       = e.id
     LEFT JOIN schools es ON p.escuela_id   = es.id
@@ -31,15 +43,43 @@ const modelGetPhilosophers = async ({ era, school, name } = {}) => {
     query += ` AND p.nombre ILIKE $${values.length}`;
   }
 
-  query += ` ORDER BY p.fecha_nacimiento ASC NULLS LAST`;
+  // query += ` ORDER BY sort_year ASC NULLS LAST, p.nombre ASC`;
+  query += ` ORDER BY p.fecha_orden ASC NULLS LAST, p.nombre ASC`;
 
   const res = await pool.query(query, values);
   return res.rows;
 };
 
 const modelSearchPhilosophers = async ({ q, eras, religions, schools }) => {
-  let query = `
-    SELECT DISTINCT ON (p.id) p.*, e.nombre AS era, r.nombre AS religion, s.nombre AS escuela
+  // let query = `
+  //   SELECT DISTINCT ON (p.id) p.*, e.nombre AS era, r.nombre AS religion, s.nombre AS escuela
+  //   FROM philosophers p
+  //   LEFT JOIN eras e ON p.era_id = e.id
+  //   LEFT JOIN schools s ON p.escuela_id = s.id
+  //   LEFT JOIN religions r ON p.religion_id = r.id
+  //   LEFT JOIN concepts c ON c.philosopher_id = p.id
+  //   WHERE 1=1
+  // `;
+    let query = `
+    SELECT DISTINCT ON (p.id)
+      p.id,
+      p.nombre,
+      p.fecha_nacimiento,
+      p.fecha_texto,
+      e.nombre AS era,
+      r.nombre AS religion,
+      s.nombre AS escuela,
+
+      -- Mismo cálculo de sort_year:
+      CASE
+        WHEN p.fecha_nacimiento IS NOT NULL
+          THEN EXTRACT(YEAR FROM p.fecha_nacimiento)::int
+        WHEN p.fecha_nacimiento IS NULL
+          AND p.fecha_texto ~ '\\d+\\s*a\\.C\\.'
+          THEN -(regexp_replace(p.fecha_texto, '\\D', '', 'g')::int)
+        ELSE NULL
+      END AS sort_year
+
     FROM philosophers p
     LEFT JOIN eras e ON p.era_id = e.id
     LEFT JOIN schools s ON p.escuela_id = s.id
@@ -49,7 +89,6 @@ const modelSearchPhilosophers = async ({ q, eras, religions, schools }) => {
   `;
   const values = [];
 
-  // Si hay texto de búsqueda (q), añadimos el filtro
   if (q) {
     values.push(`%${q}%`);
     query += `
@@ -67,29 +106,26 @@ const modelSearchPhilosophers = async ({ q, eras, religions, schools }) => {
     `;
   }
 
-  // Si hay eras, añadir filtro por era
   if (eras) {
     const erasArray = eras.split(",");
     query += ` AND e.nombre IN (${erasArray.map((_, idx) => `$${values.length + idx + 1}`).join(",")})`;
     values.push(...erasArray);
   }
 
-  // Si hay religiones, añadir filtro por religión
   if (religions) {
     const religionsArray = religions.split(",");
     query += ` AND r.nombre IN (${religionsArray.map((_, idx) => `$${values.length + idx + 1}`).join(",")})`;
     values.push(...religionsArray);
   }
 
-  // Si hay escuelas, añadir filtro por escuela
   if (schools) {
     const schoolsArray = schools.split(",");
     query += ` AND s.nombre IN (${schoolsArray.map((_, idx) => `$${values.length + idx + 1}`).join(",")})`;
     values.push(...schoolsArray);
   }
 
-  // Asegurarse de que el ORDER BY sea por id primero
-  query += ` ORDER BY p.id, p.fecha_nacimiento ASC NULLS LAST`;  // Primero ordenar por id y luego por fecha de nacimiento
+  // query += ` ORDER BY p.id, sort_year ASC NULLS LAST`;
+  query += ` ORDER BY p.id, p.fecha_orden ASC NULLS LAST, p.nombre ASC`;
 
   const res = await pool.query(query, values);
   return res.rows;
