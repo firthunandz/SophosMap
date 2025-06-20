@@ -234,7 +234,7 @@ const PhilosopherDetail = () => {
   }
 
   return (
-    <div className="max-w-screen-lg mx-auto px-4 py-6">
+    <div className="max-w-screen-lg mx-auto px-4 py-4 sm:py-6 sm:px-12">
       {/* Volver arriba */}
       <div className="mb-4">
         <Button variant="gray" onClick={() => navigate('/admin/philosophers')}>
@@ -243,12 +243,12 @@ const PhilosopherDetail = () => {
         </Button>
       </div>
 
-      <h1 className="text-center text-4xl font-cinzel text-ink-black mb-4">
+      <h1 className="text-center font-cinzel text-ink-black mb-1 sm:mb-4 text-2xl sm:text-3xl lg:text-4xl">
         Editar Filósofo
       </h1>
 
       {successMessage && (
-        <div className="mb-4 text-center text-green-700 font-medium">
+        <div className="mb-4 text-center text-green-700 font-medium text-sm sm:text-base">
           {successMessage}
         </div>
       )}
@@ -257,93 +257,93 @@ const PhilosopherDetail = () => {
         {/* Información básica */}
         <div className="flex flex-col gap-x-16 mb-4">
           <div className="mb-2">
-            <label className="block mb-1 text-lg font-semibold">Nombre completo</label>
+            <label className="block mb-1 font-semibold text-base sm:text-lg">Nombre completo</label>
             <input
               type="text"
               name="nombre"
               value={philosopher.nombre}
               onChange={handleInputChange}
-              className="w-full p-2 border border-warm-gray rounded"
+              className="w-full p-2 border border-warm-gray rounded text-sm sm:text-lg"
               required
             />
           </div>
 
           <div className="mb-2">
-            <label className="block mb-1 text-lg font-semibold">Fecha de nacimiento</label>
+            <label className="block mb-1 font-semibold text-base sm:text-lg">Fecha de nacimiento</label>
             <input
               type="date"
               name="fecha_nacimiento"
               value={philosopher.fecha_nacimiento}
               onChange={handleInputChange}
-              className="w-full p-2 border border-warm-gray rounded"
+              className="w-full p-2 border border-warm-gray rounded text-sm sm:text-lg"
             />
           </div>
 
           <div className="mb-2">
-            <label className="block mb-1 text-lg font-semibold">Fecha (texto libre)</label>
+            <label className="block mb-1 font-semibold text-base sm:text-lg">Fecha (texto libre)</label>
             <input
               type="text"
               name="fecha_texto"
               value={philosopher.fecha_texto}
               onChange={handleInputChange}
-              className="w-full p-2 border border-warm-gray rounded"
+              className="w-full p-2 border border-warm-gray rounded text-sm sm:text-lg"
             />
           </div>
 
           <div className="mb-2">
-            <label className="block mb-1 text-lg font-semibold">Lugar de nacimiento</label>
+            <label className="block mb-1 font-semibold text-base sm:text-lg">Lugar de nacimiento</label>
             <input
               type="text"
               name="lugar_nacimiento"
               value={philosopher.lugar_nacimiento}
               onChange={handleInputChange}
-              className="w-full p-2 border border-warm-gray rounded"
+              className="w-full p-2 border border-warm-gray rounded text-sm sm:text-lg"
             />
           </div>
 
           <div className="mb-2">
-            <label className="block mb-1 text-lg font-semibold">Fecha de muerte (texto)</label>
+            <label className="block mb-1 font-semibold text-base sm:text-lg">Fecha de muerte (texto)</label>
             <input
               type="text"
               name="fecha_muerte"
               value={philosopher.fecha_muerte}
               onChange={handleInputChange}
-              className="w-full p-2 border border-warm-gray rounded"
+              className="w-full p-2 border border-warm-gray rounded text-sm sm:text-lg"
             />
           </div>
 
           <div className="mb-2">
-            <label className="block mb-1 text-lg font-semibold">Lugar de muerte</label>
+            <label className="block mb-1 font-semibold text-base sm:text-lg">Lugar de muerte</label>
             <input
               type="text"
               name="lugar_muerte"
               value={philosopher.lugar_muerte}
               onChange={handleInputChange}
-              className="w-full p-2 border border-warm-gray rounded"
+              className="w-full p-2 border border-warm-gray rounded text-sm sm:text-lg"
             />
           </div>
 
-          <div className="mb-2">
-            <label className="block mb-1 text-lg font-semibold">Notas</label>
+          <div>
+            <label className="block mb-1 font-semibold text-base sm:text-lg">Notas</label>
             <textarea
               name="notas"
               value={philosopher.notas}
               onChange={handleInputChange}
-              className="w-full p-2 border border-warm-gray rounded"
+              className="w-full p-2 border border-warm-gray rounded text-sm sm:text-lg"
               rows="4"
             />
           </div>
         </div>
 
         {/* Relaciones (FK) */}
-        <div className="flex justify-around mb-4">
+        <div className="flex justify-around mb-4 flex-col gap-y-2 sm:flex-row sm:gap-y-0 sm:gap-x-4 sm:px-4">
           <div>
-            <label className="block mb-2">Era</label>
+            <label className="block font-semibold text-base sm:text-lg">Era</label>
             <select
               name="era"
               value={philosopher.era}
               onChange={handleInputChange}
-              className="w-full p-2 border border-warm-gray rounded"
+              className="w-full p-2 border border-warm-gray rounded text-sm sm:text-lg"
               required
             >
               <option value="">Seleccionar era</option>
@@ -354,12 +354,12 @@ const PhilosopherDetail = () => {
           </div>
 
           <div>
-            <label className="block mb-2">Escuela</label>
+            <label className="block font-semibold text-base sm:text-lg">Escuela</label>
             <select
               name="escuela"
               value={philosopher.escuela}
               onChange={handleInputChange}
-              className="w-full p-2 border border-warm-gray rounded"
+              className="w-full p-2 border border-warm-gray rounded text-sm sm:text-lg"
               required
             >
               <option value="">Seleccionar escuela</option>
@@ -370,12 +370,12 @@ const PhilosopherDetail = () => {
           </div>
 
           <div>
-            <label className="block mb-2">Religión</label>
+            <label className="block font-semibold text-base sm:text-lg">Religión</label>
             <select
               name="religion"
               value={philosopher.religion}
               onChange={handleInputChange}
-              className="w-full p-2 border border-warm-gray rounded"
+              className="w-full p-2 border border-warm-gray rounded text-sm sm:text-lg"
               required
             >
               <option value="">Seleccionar religión</option>
@@ -387,11 +387,11 @@ const PhilosopherDetail = () => {
         </div>
 
         {/* Campos dinámicos en dos columnas */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">
           {/* Legado */}
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-semibold">Legado</h2>
+            <div className="flex items-center gap-x-6 mb-2">
+              <h2 className="text-base sm:text-lg font-semibold">Legado</h2>
               <button
                 type="button"
                 onClick={() => handleAddField('legado')}
@@ -407,13 +407,13 @@ const PhilosopherDetail = () => {
                   type="text"
                   value={item}
                   onChange={(e) => handleArrayChange('legado', idx, e.target.value)}
-                  className="flex-grow p-2 border border-warm-gray rounded"
+                  className="flex-grow p-2 border border-warm-gray rounded text-sm sm:text-lg"
                   placeholder="Escribe un legado"
                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveField('legado', idx)}
-                  className="text-red-500 hover:text-red-700"
+                  className="text-red-500 hover:text-red-700 text-sm sm:text-lg"
                   title="Eliminar legado"
                 >
                   ✕
@@ -424,8 +424,8 @@ const PhilosopherDetail = () => {
 
           {/* Ocupación */}
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-semibold">Ocupación</h2>
+            <div className="flex items-center gap-x-6 mb-2">
+              <h2 className="text-base sm:text-lg font-semibold">Ocupación</h2>
               <button
                 type="button"
                 onClick={() => handleAddField('ocupacion')}
@@ -441,13 +441,13 @@ const PhilosopherDetail = () => {
                   type="text"
                   value={item}
                   onChange={(e) => handleArrayChange('ocupacion', idx, e.target.value)}
-                  className="flex-grow p-2 border border-warm-gray rounded"
+                  className="flex-grow p-2 border border-warm-gray rounded text-sm sm:text-lg"
                   placeholder="Escribe una ocupación"
                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveField('ocupacion', idx)}
-                  className="text-red-500 hover:text-red-700"
+                  className="text-red-500 hover:text-red-700 text-sm sm:text-lg"
                   title="Eliminar ocupación"
                 >
                   ✕
@@ -458,8 +458,8 @@ const PhilosopherDetail = () => {
 
           {/* Intereses */}
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-semibold">Intereses</h2>
+            <div className="flex items-center gap-x-6 mb-2">
+              <h2 className="text-base sm:text-lg font-semibold">Intereses</h2>
               <button
                 type="button"
                 onClick={() => handleAddField('intereses')}
@@ -475,13 +475,13 @@ const PhilosopherDetail = () => {
                   type="text"
                   value={item}
                   onChange={(e) => handleArrayChange('intereses', idx, e.target.value)}
-                  className="flex-grow p-2 border border-warm-gray rounded"
+                  className="flex-grow p-2 border border-warm-gray rounded text-sm sm:text-lg"
                   placeholder="Escribe un interés"
                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveField('intereses', idx)}
-                  className="text-red-500 hover:text-red-700"
+                  className="text-red-500 hover:text-red-700 text-sm sm:text-lg"
                   title="Eliminar interés"
                 >
                   ✕
@@ -492,8 +492,8 @@ const PhilosopherDetail = () => {
 
           {/* Conceptos */}
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-semibold">Conceptos</h2>
+            <div className="flex items-center gap-x-6 mb-2">
+              <h2 className="text-base sm:text-lg font-semibold">Conceptos</h2>
               <button
                 type="button"
                 onClick={() => handleAddField('conceptos')}
@@ -509,13 +509,13 @@ const PhilosopherDetail = () => {
                   type="text"
                   value={item}
                   onChange={(e) => handleArrayChange('conceptos', idx, e.target.value)}
-                  className="flex-grow p-2 border border-warm-gray rounded"
+                  className="flex-grow p-2 border border-warm-gray rounded text-sm sm:text-lg"
                   placeholder="Escribe un concepto"
                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveField('conceptos', idx)}
-                  className="text-red-500 hover:text-red-700"
+                  className="text-red-500 hover:text-red-700 text-sm sm:text-lg"
                   title="Eliminar concepto"
                 >
                   ✕
@@ -526,8 +526,8 @@ const PhilosopherDetail = () => {
 
           {/* Influencias */}
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-semibold">Influencias</h2>
+            <div className="flex items-center gap-x-6 mb-2">
+              <h2 className="text-base sm:text-lg font-semibold">Influencias</h2>
               <button
                 type="button"
                 onClick={() => handleAddField('influencias')}
@@ -543,13 +543,13 @@ const PhilosopherDetail = () => {
                   type="text"
                   value={item}
                   onChange={(e) => handleArrayChange('influencias', idx, e.target.value)}
-                  className="flex-grow p-2 border border-warm-gray rounded"
+                  className="flex-grow p-2 border border-warm-gray rounded text-sm sm:text-lg"
                   placeholder="Escribe una influencia"
                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveField('influencias', idx)}
-                  className="text-red-500 hover:text-red-700"
+                  className="text-red-500 hover:text-red-700 text-sm sm:text-lg"
                   title="Eliminar influencia"
                 >
                   ✕
@@ -560,8 +560,8 @@ const PhilosopherDetail = () => {
 
           {/* Estudiantes */}
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-semibold">Estudiantes</h2>
+            <div className="flex items-center gap-x-6 mb-2">
+              <h2 className="text-base sm:text-lg font-semibold">Estudiantes</h2>
               <button
                 type="button"
                 onClick={() => handleAddField('estudiantes')}
@@ -577,13 +577,13 @@ const PhilosopherDetail = () => {
                   type="text"
                   value={item}
                   onChange={(e) => handleArrayChange('estudiantes', idx, e.target.value)}
-                  className="flex-grow p-2 border border-warm-gray rounded"
+                  className="flex-grow p-2 border border-warm-gray rounded text-sm sm:text-lg"
                   placeholder="Escribe un estudiante"
                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveField('estudiantes', idx)}
-                  className="text-red-500 hover:text-red-700"
+                  className="text-red-500 hover:text-red-700 text-sm sm:text-lg"
                   title="Eliminar estudiante"
                 >
                   ✕
@@ -594,8 +594,8 @@ const PhilosopherDetail = () => {
 
           {/* Maestros */}
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-semibold">Maestros</h2>
+            <div className="flex items-center gap-x-6 mb-2">
+              <h2 className="text-base sm:text-lg font-semibold">Maestros</h2>
               <button
                 type="button"
                 onClick={() => handleAddField('maestros')}
@@ -611,13 +611,13 @@ const PhilosopherDetail = () => {
                   type="text"
                   value={item}
                   onChange={(e) => handleArrayChange('maestros', idx, e.target.value)}
-                  className="flex-grow p-2 border border-warm-gray rounded"
+                  className="flex-grow p-2 border border-warm-gray rounded text-sm sm:text-lg"
                   placeholder="Escribe un maestro"
                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveField('maestros', idx)}
-                  className="text-red-500 hover:text-red-700"
+                  className="text-red-500 hover:text-red-700 text-sm sm:text-lg"
                   title="Eliminar maestro"
                 >
                   ✕
@@ -628,11 +628,11 @@ const PhilosopherDetail = () => {
         </div>
 
         {/* Libros, Trabajos y Citas */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8 mt-2 md:mt-8">
           {/* Libros */}
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-semibold">Libros</h2>
+            <div className="flex items-center gap-x-6 mb-2">
+              <h2 className="text-base sm:text-lg font-semibold">Libros</h2>
               <button
                 type="button"
                 onClick={handleAddBook}
@@ -649,33 +649,33 @@ const PhilosopherDetail = () => {
                   placeholder="Título del libro"
                   value={book.titulo}
                   onChange={(e) => handleBookChange(idx, 'titulo', e.target.value)}
-                  className="w-full p-2 border border-warm-gray rounded mb-2"
+                  className="w-full p-2 border border-warm-gray rounded mb-2 text-sm sm:text-lg"
                 />
                 <input
                   type="text"
                   placeholder="Idioma"
                   value={book.idioma}
                   onChange={(e) => handleBookChange(idx, 'idioma', e.target.value)}
-                  className="w-full p-2 border border-warm-gray rounded mb-2"
+                  className="w-full p-2 border border-warm-gray rounded mb-2 text-sm sm:text-lg"
                 />
                 <input
                   type="text"
                   placeholder="Estado"
                   value={book.estado}
                   onChange={(e) => handleBookChange(idx, 'estado', e.target.value)}
-                  className="w-full p-2 border border-warm-gray rounded mb-2"
+                  className="w-full p-2 border border-warm-gray rounded mb-2 text-sm sm:text-lg"
                 />
                 <textarea
                   placeholder="Descripción"
                   value={book.descripcion}
                   onChange={(e) => handleBookChange(idx, 'descripcion', e.target.value)}
-                  className="w-full p-2 border border-warm-gray rounded mb-2"
+                  className="w-full p-2 border border-warm-gray rounded mb-2 text-sm sm:text-lg"
                   rows="3"
                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveBook(idx)}
-                  className="text-red-500 hover:text-red-700 mt-1"
+                  className="text-red-500 hover:text-red-700 mt-1 text-sm sm:text-lg"
                 >
                   Eliminar libro
                 </button>
@@ -685,8 +685,8 @@ const PhilosopherDetail = () => {
 
           {/* Trabajos */}
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-semibold">Trabajos</h2>
+            <div className="flex items-center gap-x-6 mb-2">
+              <h2 className="text-base sm:text-lg font-semibold">Trabajos</h2>
               <button
                 type="button"
                 onClick={handleAddWork}
@@ -703,19 +703,19 @@ const PhilosopherDetail = () => {
                   placeholder="Título del trabajo"
                   value={work.titulo}
                   onChange={(e) => handleWorkChange(idx, 'titulo', e.target.value)}
-                  className="w-full p-2 border border-warm-gray rounded mb-2"
+                  className="w-full p-2 border border-warm-gray rounded mb-2 text-sm sm:text-lg"
                 />
                 <textarea
                   placeholder="Descripción"
                   value={work.descripcion}
                   onChange={(e) => handleWorkChange(idx, 'descripcion', e.target.value)}
-                  className="w-full p-2 border border-warm-gray rounded mb-2"
+                  className="w-full p-2 border border-warm-gray rounded mb-2 text-sm sm:text-lg"
                   rows="3"
                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveWork(idx)}
-                  className="text-red-500 hover:text-red-700 mt-1"
+                  className="text-red-500 hover:text-red-700 mt-1 text-sm sm:text-lg"
                 >
                   Eliminar trabajo
                 </button>
@@ -725,12 +725,12 @@ const PhilosopherDetail = () => {
 
           {/* Citas */}
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-semibold">Citas</h2>
+            <div className="flex items-center gap-x-6 mb-2">
+              <h2 className="text-base sm:text-lg font-semibold">Citas</h2>
               <button
                 type="button"
                 onClick={handleAddQuote}
-                className="text-2xl text-green-600 hover:text-green-800"
+                className="text-xl sm:text-2xl text-green-600 hover:text-green-800"
                 title="Agregar cita"
               >
                 <FiPlusCircle />
@@ -742,13 +742,13 @@ const PhilosopherDetail = () => {
                   placeholder="Escribe una cita"
                   value={quote}
                   onChange={(e) => handleArrayChange('quotes', idx, e.target.value)}
-                  className="w-full p-2 border border-warm-gray rounded mb-2"
+                  className="w-full p-2 border border-warm-gray rounded mb-2 text-sm sm:text-lg"
                   rows="3"
                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveQuote(idx)}
-                  className="text-red-500 hover:text-red-700 mt-1"
+                  className="text-red-500 hover:text-red-700 mt-1 text-sm sm:text-lg"
                 >
                   Eliminar cita
                 </button>
@@ -758,16 +758,16 @@ const PhilosopherDetail = () => {
         </div>
 
         {/* Botones de acción */}
-        <div className="flex justify-center my-6">
-          <div className="flex gap-4">
-            <Button variant="gray" onClick={() => navigate('/admin/philosophers')}>
-              <FiArrowLeft className="inline-block mr-1" />
+        <div className="flex justify-center my-2 sm:my-6">
+          <div className="flex gap-2 sm:gap-4">
+            <Button variant="gray" onClick={() => navigate('/admin/philosophers')} className='text-xs sm:text-base'>
+              <FiArrowLeft className="inline-block mr-1 text-xs sm:text-base" />
               Volver
             </Button>
-            <Button type="submit" variant="gold">
+            <Button type="submit" variant="gold" className='text-xs sm:text-base'>
               Guardar cambios
             </Button>
-            <Button type="button" variant="brown" onClick={handleDelete}>
+            <Button type="button" variant="brown" onClick={handleDelete} className='text-xs sm:text-base'>
               Eliminar Filósofo
             </Button>
           </div>

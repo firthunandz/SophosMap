@@ -1,6 +1,6 @@
 export default function ModalPhoto({
   philosopher,
-  sizeClass = 'size-40',
+  sizeClass = 'size-28 sm:size-40',
   marginClass = 'ml-8',
   frameClass = 'border-4 border-antique-gold',
 }) {

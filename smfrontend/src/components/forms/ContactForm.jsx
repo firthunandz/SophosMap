@@ -25,10 +25,10 @@ export default function ContactForm() {
       });
 
       if (response.ok) {
-        alert('Gracias por tu mensaje 🙌');
+        alert('Gracias por tu mensaje');
         reset();
       } else {
-        alert('Hubo un error al enviar el mensaje 😕');
+        alert('Hubo un error al enviar el mensaje');
       }
     } catch (error) {
       console.error(error);
@@ -39,7 +39,7 @@ export default function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="bg-parchment/50 p-6 rounded shadow-md text-left border border-warm-brown"
+      className="bg-parchment/50 px-3 py-2 sm:px-4 md:p-3 rounded-lg shadow-md text-left border border-warm-brown flex flex-col lg:gap-y-4"
     >
       {!isAuthenticated && (
         <>
@@ -71,13 +71,13 @@ export default function ContactForm() {
         error={errors.message}
       >
         <textarea
-          rows="5"
+          rows="4"
           {...register('message', { required: true })}
           className="w-full border border-warm-gray rounded px-3 py-2 bg-ivory"
         />
       </FormGroup>
 
-      <Button type="submit" variant="gold" size="md">
+      <Button type="submit" variant="gold" size="md" className='self-center'>
         Enviar mensaje
       </Button>
     </form>

@@ -56,7 +56,7 @@ export default function Timeline() {
       {/* Contenedor con scroll interno */}
       <div
       ref={containerRef}
-      className="relative h-[80vh] w-full overflow-y-auto"
+      className="relative h-[85vh] w-full overflow-y-auto"
       >
       {/* Elementos de la línea de tiempo */}
       <motion.div className="flex flex-col items-center pt-8 pb-16 pl-4 pr-4 gap-y-6">

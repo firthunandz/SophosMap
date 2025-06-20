@@ -7,7 +7,7 @@ export default function SophosMap() {
   const { user } = useAuth();
 
   return (
-    <div className="flex flex-col h-full w-full bg-auto bg-repeat bg-fixed" style={{ backgroundImage: `url(${bgImg})` }}>
+    <div className="flex flex-col h-full w-full bg-center bg-cover bg-no-repeat bg-fixed" style={{ backgroundImage: `url(${bgImg})` }}>
       {!user && (
         <div className="p-2 rounded-lg text-center">
           <p>
@@ -17,7 +17,7 @@ export default function SophosMap() {
           </p>
         </div>
       )}
-      <div className="w-full mx-auto py-8">
+      <div className="w-full mx-auto">
         <Timeline />
       </div>
     </div>

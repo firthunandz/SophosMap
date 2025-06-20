@@ -9,8 +9,8 @@ const AdminPanel = () => {
   };
 
   return (
-    <div className="flex flex-col items-center py-8 gap-y-10">
-      <h1 className='text-3xl font-cinzel text-ink-black '>Panel de administrador</h1>
+    <div className="flex flex-col items-center py-4 gap-y-4 sm:py-8 sm:gap-y-10">
+      <h1 className='text-xl sm:text-3xl font-cinzel text-ink-black '>Panel de administrador</h1>
       <Button onClick={goToPhilosophers}>Filosofos</Button>
     </div>
   );

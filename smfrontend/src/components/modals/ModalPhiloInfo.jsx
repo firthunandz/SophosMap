@@ -28,7 +28,7 @@ export default function PhilosopherInfo({ philosopher: propPhilosopher, onClose 
       if (isFavorite) {
         removeFavorite(philosopher.id);
       } else {
-        addFavorite(philosopher.id);
+        addFavorite(philosopher);
       }
     } catch (error) {
       console.error('Error al actualizar favoritos:', error);

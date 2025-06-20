@@ -6,23 +6,23 @@ import ContactForm from '../components/forms/ContactForm';
 export const Contact = () => {
   const { user, isAuthenticated } = useAuth();
   return (
-    <div className="max-w-2xl mx-auto px-4 py-10 font-eb-garamond text-lg text-deep-sepia">
-      <h2 className="text-4xl font-cinzel text-warm-brown font-bold mb-2 text-center">
+    <section className="sm:max-w-lg md:max-w-2xl mx-auto px-4 py-4 md:py-4 lg:py-8 font-eb-garamond text-lg text-deep-sepia flex flex-col gap-y-3 lg:gap-y-6">
+      <h2 className="xs:text-xl md:text-4xl font-cinzel text-warm-brown font-bold text-center">
         Contacto
       </h2>
 
-      <p className="text-center mb-6">
+      <p className="text-center text-base md:text-xl">
         Si tenés alguna sugerencia, recomendación o simplemente querés dejar un mensaje, completá el formulario. ¡Te leo!
       </p>
 
-      <div className="flex justify-center gap-4 mb-8">
+      <div className="flex justify-center gap-4">
         <a
           href="https://github.com/firthunandz"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Button variant="gold" size="sm" className="flex items-center">
-            <FaGithub className="mr-2 size-5" />
+          <Button variant="gold" size="sm" className="flex items-center md:p-2">
+            <FaGithub className="mr-2 size-5 md:size 7" />
             GitHub
           </Button>
         </a>
@@ -31,15 +31,14 @@ export const Contact = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Button variant="brown" size="sm" className="flex items-center">
-            <FaLinkedin className="mr-2 size-5" />
+          <Button variant="brown" size="sm" className="flex items-center md:p-2">
+            <FaLinkedin className="mr-2 size-5 md:size 7" />
             LinkedIn
           </Button>
         </a>
       </div>
 
-      {/* 👇 Este es el nuevo componente reutilizable */}
       <ContactForm isAuthenticated={isAuthenticated} user={user} />
-    </div>
+    </section>
   );
 };

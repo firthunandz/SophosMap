@@ -5,7 +5,7 @@ import WorksField from './WorksField';
 
 export default function ModalContent({ philosopher }) {
   return (
-    <div className="pt-4 pb-2 px-10 grid md:grid-cols-2 gap-x-16">
+    <div className="pt-4 pb-2 px-6 sm:px-10 grid md:grid-cols-2 sm:gap-x-16">
       <div>
         <ModalPhoto philosopher={philosopher} />
         <SimpleField label="Nombre completo" value={philosopher.nombre} />

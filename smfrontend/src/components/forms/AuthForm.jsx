@@ -13,8 +13,8 @@ export default function AuthForm({
   extraLink
 }) {
   return (
-    <div className="w-full max-w-md p-8 space-y-8 bg-ivory rounded-lg shadow my-10">
-      <h2 className="text-3xl font-bold text-center font-cinzel text-warm-brown">{title}</h2>
+    <div className="md:w-full max-w-md p-4 md:p-8 space-y-8 bg-ivory rounded-lg shadow my-4 sm:my-10">
+      <h2 className="text-2xl sm:text-3xl font-bold text-center font-cinzel text-warm-brown">{title}</h2>
 
       {error && (
         <div className="p-4 bg-red-100 text-red-700 rounded">
@@ -22,7 +22,7 @@ export default function AuthForm({
         </div>
       )}
 
-      <form className="mt-8 space-y-6" onSubmit={onSubmit}>
+      <form className="mt-8 xs:space-y-2 md:space-y-6" onSubmit={onSubmit}>
         {fields.map((field) => (
           <FormGroup key={field.name} label={field.label}>
             <input
@@ -30,7 +30,7 @@ export default function AuthForm({
               type={field.type}
               name={field.name}
               id={field.name}
-              className={`w-full border border-warm-gray rounded px-3 py-2 bg-ivory ${
+              className={`w-full border border-warm-gray rounded px-3 py-1 sm:py-2 bg-ivory ${
                 field.error ? 'border-red-500' : ''
               }`}
             />

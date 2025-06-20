@@ -9,7 +9,7 @@ const AdminHeader = () => {
 
   const onLogout = () => {
     const redirectPath = logout();
-    navigate(redirectPath);  // Redirige a la ruta especificada
+    navigate(redirectPath);
   };
 
   return (

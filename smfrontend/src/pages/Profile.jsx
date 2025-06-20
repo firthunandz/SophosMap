@@ -85,7 +85,7 @@ const Profile = () => {
 
   return (
     <div
-      className="relative flex flex-col h-full bg-auto bg-repeat bg-fixed"
+      className="relative flex flex-col h-full w-full bg-center bg-cover bg-no-repeat bg-fixed"
       style={{ backgroundImage: `url(${bgImg})` }}
     >
       <div className="absolute inset-0 bg-parchment/40 backdrop-brightness-95 z-0" />
@@ -94,30 +94,32 @@ const Profile = () => {
           Perfil de {userData.nickname || userData.username}
         </h1>
         <div className="h-[2px] w-24 bg-antique-gold mx-auto mb-4" />
-
-        <h2 className="text-2xl font-semibold text-deep-sepia">Filósofos favoritos</h2>
-        {favoritePhilosophers.length === 0 ? (
-          <p className="text-ink-black">Este usuario no tiene filósofos favoritos aún.</p>
-        ) : (
-          <div className="relative w-full max-h-[60vh] overflow-y-auto">
-            <div className="flex flex-col items-center pt-8 pb-16 px-4 gap-y-6">
-              {favoritePhilosophers.map((philo, index) => {
-                const side = index % 2 === 0 ? 'left' : 'right';
-                return (
-                  <TimelineItem
-                    key={philo.id}
-                    philosopher={philo}
-                    side={side}
-                    isFavorite={true}
-                    onSelect={setSelectedPhilosopher}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        )}
-
+        <h2 className="text-2xl font-semibold text-deep-sepia">
+          Filósofos favoritos
+        </h2>
       </div>
+
+      {favoritePhilosophers.length === 0 ? (
+        <p className="text-ink-black">Este usuario no tiene filósofos favoritos aún.</p>
+      ) : (
+        <div className="relative w-full h-[70vh] overflow-y-auto">
+          <div className="flex flex-col items-center pt-8 pb-16 px-4 gap-y-6">
+            {favoritePhilosophers.map((philo, index) => {
+              const side = index % 2 === 0 ? 'left' : 'right';
+              return (
+                <TimelineItem
+                  key={philo.id}
+                  philosopher={philo}
+                  side={side}
+                  isFavorite={true}
+                  onSelect={setSelectedPhilosopher}
+                />
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {selectedPhilosopher && (
         <ModalPhiloInfo
           philosopher={selectedPhilosopher}

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import Button from '../components/ui/Button';
-import { FiPlusCircle } from 'react-icons/fi';
+import { FiPlusCircle, FiArrowLeft } from 'react-icons/fi';
 
 const NewPhilosopher = () => {
   const navigate = useNavigate();
@@ -168,13 +168,22 @@ const handleWorkChange = (index, clave, value) => {
 
   return (
     <div className="max-w-screen-lg mx-auto px-4 py-6">
-      <h1 className="text-center text-4xl font-cinzel text-ink-black mb-4">Nuevo Filósofo</h1>
+      <div className="mb-4">
+        <Button variant="gray" onClick={() => navigate('/admin/philosophers')}>
+          <FiArrowLeft className="inline-block mr-1" />
+          Volver
+        </Button>
+      </div>
+
+      <h1 className="text-center font-cinzel text-ink-black text-2xl sm:text-3xl lg:text-4xl mb-4">
+        Nuevo Filósofo
+      </h1>
 
       <form onSubmit={handleSubmit}>
         {/* Información básica */}
-        <div className="flex flex-col gap-x-16 mb-4">
+        <div className="flex flex-col sm:mb-4">
           <div className='mb-2'>
-            <label className="block mb-1 text-lg font-semibold">Nombre completo</label>
+            <label className="block mb-1 text-base sm:text-lg font-semibold">Nombre completo</label>
             <input
               type="text"
               name="nombre"
@@ -185,7 +194,7 @@ const handleWorkChange = (index, clave, value) => {
             />
           </div>
           <div className='mb-2'>
-            <label className="block mb-1 text-lg font-semibold">Fecha de nacimiento (date)</label>
+            <label className="block mb-1 text-base sm:text-lg font-semibold">Fecha de nacimiento (date)</label>
             <input
               type="date"
               name="fecha_nacimiento"
@@ -195,7 +204,7 @@ const handleWorkChange = (index, clave, value) => {
             />
           </div>
           <div className='mb-2'>
-            <label className="block mb-1 text-lg font-semibold">Fecha de nacimiento (texto)</label>
+            <label className="block mb-1 text-base sm:text-lg font-semibold">Fecha de nacimiento (texto)</label>
             <input
               type="text"
               name="fecha_texto"
@@ -206,7 +215,7 @@ const handleWorkChange = (index, clave, value) => {
             />
           </div>
           <div className='mb-2'>
-            <label className="block mb-1 text-lg font-semibold">Lugar de nacimiento</label>
+            <label className="block mb-1 text-base sm:text-lg font-semibold">Lugar de nacimiento</label>
             <input
               type="text"
               name="lugar_nacimiento"
@@ -216,7 +225,7 @@ const handleWorkChange = (index, clave, value) => {
             />
           </div>
           <div className='mb-2'>
-            <label className="block mb-1 text-lg font-semibold">Fecha de muerte</label>
+            <label className="block mb-1 text-base sm:text-lg font-semibold">Fecha de muerte</label>
             <input
               type="text"
               name="fecha_muerte"
@@ -226,7 +235,7 @@ const handleWorkChange = (index, clave, value) => {
             />
           </div>
           <div className='mb-2'>
-            <label className="block mb-1 text-lg font-semibold">Lugar de muerte</label>
+            <label className="block mb-1 text-base sm:text-lg font-semibold">Lugar de muerte</label>
             <input
               type="text"
               name="lugar_muerte"
@@ -236,7 +245,7 @@ const handleWorkChange = (index, clave, value) => {
             />
           </div>
           <div className='mb-2'>
-            <label className="block mb-1 text-lg font-semibold">Notas</label>
+            <label className="block mb-1 text-base sm:text-lg font-semibold">Notas</label>
             <textarea
               name="notas"
               value={philosopher.notas}
@@ -248,14 +257,14 @@ const handleWorkChange = (index, clave, value) => {
         </div>
 
         {/* Relaciones (FK) */}
-        <div className="flex justify-around mb-4">
+        <div className="flex flex-col gap-y-2 justify-around mb-4 sm:flex-row sm:gap-x-2 sm:px-4">
           <div>
-            <label className="block mb-2">Era</label>
+            <label className="block sm:mb-2">Era</label>
             <select
               name="era"
               value={philosopher.era}
               onChange={handleInputChange}
-              className="w-full p-2 border border-warm-gray rounded"
+              className="w-full p-2 border border-warm-gray rounded text-sm sm:text-base"
               required
             >
               <option value="">Seleccionar era</option>
@@ -265,12 +274,12 @@ const handleWorkChange = (index, clave, value) => {
             </select>
           </div>
           <div>
-            <label className="block mb-2">Escuela</label>
+            <label className="block sm:mb-2">Escuela</label>
             <select
               name="escuela"
               value={philosopher.escuela}
               onChange={handleInputChange}
-              className="w-full p-2 border border-warm-gray rounded"
+              className="w-full p-2 border border-warm-gray rounded text-sm sm:text-base"
               required
             >
               <option value="">Seleccionar escuela</option>
@@ -279,13 +288,13 @@ const handleWorkChange = (index, clave, value) => {
               ))}
             </select>
           </div>
-          <div className="mb-4">
-            <label className="block mb-2">Religión</label>
+          <div className="sm:mb-4">
+            <label className="block sm:mb-2">Religión</label>
             <select
               name="religion"
               value={philosopher.religion}
               onChange={handleInputChange}
-              className="w-full p-2 border border-warm-gray rounded"
+              className="w-full p-2 border border-warm-gray rounded text-sm sm:text-base"
               required
             >
               <option value="">Seleccionar religión</option>
@@ -296,15 +305,15 @@ const handleWorkChange = (index, clave, value) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 sm:gap-8">
           {/* Legado */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
-              <h2 className="text-lg font-semibold">Legado</h2>
+              <h2 className="text-base sm:text-lg font-semibold">Legado</h2>
               <button
                 type="button"
                 onClick={() => handleAddField('legado')}
-                className="text-2xl text-green-600 hover:text-green-800"
+                className="text-xl sm:text-2xl text-green-600 hover:text-green-800"
                 title="Agregar legado"
               >
                 <FiPlusCircle />
@@ -334,11 +343,11 @@ const handleWorkChange = (index, clave, value) => {
           {/* Ocupación */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
-              <h2 className="text-lg font-semibold">Ocupación</h2>
+              <h2 className="text-base sm:text-lg font-semibold">Ocupación</h2>
               <button
                 type="button"
                 onClick={() => handleAddField('ocupacion')}
-                className="text-2xl text-green-600 hover:text-green-800"
+                className="text-xl sm:text-2xl text-green-600 hover:text-green-800"
                 title="Agregar ocupación"
               >
                 <FiPlusCircle />
@@ -368,11 +377,11 @@ const handleWorkChange = (index, clave, value) => {
           {/* Intereses */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
-              <h2 className="text-lg font-semibold">Intereses</h2>
+              <h2 className="text-base sm:text-lg font-semibold">Intereses</h2>
               <button
                 type="button"
                 onClick={() => handleAddField('intereses')}
-                className="text-2xl text-green-600 hover:text-green-800"
+                className="text-xl sm:text-2xl text-green-600 hover:text-green-800"
                 title="Agregar interés"
               >
                 <FiPlusCircle />
@@ -402,11 +411,11 @@ const handleWorkChange = (index, clave, value) => {
           {/* Conceptos principales */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
-              <h2 className="text-lg font-semibold">Conceptos</h2>
+              <h2 className="text-base sm:text-lg font-semibold">Conceptos</h2>
               <button
                 type="button"
                 onClick={() => handleAddField('conceptos')}
-                className="text-2xl text-green-600 hover:text-green-800"
+                className="text-xl sm:text-2xl text-green-600 hover:text-green-800"
                 title="Agregar concepto"
               >
                 <FiPlusCircle />
@@ -436,11 +445,11 @@ const handleWorkChange = (index, clave, value) => {
           {/* Influencias */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
-              <h2 className="text-lg font-semibold">Influencias</h2>
+              <h2 className="text-base sm:text-lg font-semibold">Influencias</h2>
               <button
                 type="button"
                 onClick={() => handleAddField('influencias')}
-                className="text-2xl text-green-600 hover:text-green-800"
+                className="text-xl sm:text-2xl text-green-600 hover:text-green-800"
                 title="Agregar influencia"
               >
                 <FiPlusCircle />
@@ -470,11 +479,11 @@ const handleWorkChange = (index, clave, value) => {
           {/* Estudiantes */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
-              <h2 className="text-lg font-semibold">Estudiantes</h2>
+              <h2 className="text-base sm:text-lg font-semibold">Estudiantes</h2>
               <button
                 type="button"
                 onClick={() => handleAddField('estudiantes')}
-                className="text-2xl text-green-600 hover:text-green-800"
+                className="text-xl sm:text-2xl text-green-600 hover:text-green-800"
                 title="Agregar estudiante"
               >
                 <FiPlusCircle />
@@ -504,11 +513,11 @@ const handleWorkChange = (index, clave, value) => {
           {/* Maestros */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
-              <h2 className="text-lg font-semibold">Maestros</h2>
+              <h2 className="text-base sm:text-lg font-semibold">Maestros</h2>
               <button
                 type="button"
                 onClick={() => handleAddField('maestros')}
-                className="text-2xl text-green-600 hover:text-green-800"
+                className="text-xl sm:text-2xl text-green-600 hover:text-green-800"
                 title="Agregar maestro"
               >
                 <FiPlusCircle />
@@ -536,15 +545,15 @@ const handleWorkChange = (index, clave, value) => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-8 mt-8">
+        <div className="flex flex-col gap-y-2 sm:gap-8 mt-2 sm:mt-8">
           {/* Libros */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
-              <h2 className="text-lg font-semibold">Libros</h2>
+              <h2 className="text-base sm:text-lg font-semibold">Libros</h2>
               <button
                 type="button"
                 onClick={handleAddBook}
-                className="text-2xl text-green-600 hover:text-green-800"
+                className="text-xl sm:text-2xl text-green-600 hover:text-green-800"
                 title="Agregar libro"
               >
                 <FiPlusCircle />
@@ -557,33 +566,33 @@ const handleWorkChange = (index, clave, value) => {
                   placeholder="Título del libro"
                   value={book.titulo}
                   onChange={(e) => handleBookChange(idx, 'titulo', e.target.value)}
-                  className="w-full p-2 border border-warm-gray rounded mb-2"
+                  className="w-full p-2 border border-warm-gray rounded mb-2 text-sm sm:text-base"
                 />
                 <input
                   type="text"
                   placeholder="Idioma"
                   value={book.idioma}
                   onChange={(e) => handleBookChange(idx, 'idioma', e.target.value)}
-                  className="w-full p-2 border border-warm-gray rounded mb-2"
+                  className="w-full p-2 border border-warm-gray rounded mb-2 text-sm sm:text-base"
                 />
                 <input
                   type="text"
                   placeholder="Estado"
                   value={book.estado}
                   onChange={(e) => handleBookChange(idx, 'estado', e.target.value)}
-                  className="w-full p-2 border border-warm-gray rounded mb-2"
+                  className="w-full p-2 border border-warm-gray rounded mb-2 text-sm sm:text-base"
                 />
                 <textarea
                   placeholder="Descripción"
                   value={book.descripcion}
                   onChange={(e) => handleBookChange(idx, 'descripcion', e.target.value)}
-                  className="w-full p-2 border border-warm-gray rounded mb-2"
+                  className="w-full p-2 border border-warm-gray rounded mb-2 text-sm sm:text-base"
                   rows="3"
                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveBook(idx)}
-                  className="text-red-500 hover:text-red-700 mt-1"
+                  className="text-red-500 hover:text-red-700 sm:mt-1 text-sm sm:text-base"
                 >
                   Eliminar libro
                 </button>
@@ -594,11 +603,11 @@ const handleWorkChange = (index, clave, value) => {
           {/* Trabajos */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
-              <h2 className="text-lg font-semibold">Trabajos</h2>
+              <h2 className="text-base sm:text-lg font-semibold">Trabajos</h2>
               <button
                 type="button"
                 onClick={handleAddWork}
-                className="text-2xl text-green-600 hover:text-green-800"
+                className="text-xl sm:text-2xl text-green-600 hover:text-green-800"
                 title="Agregar trabajo"
               >
                 <FiPlusCircle />
@@ -611,19 +620,19 @@ const handleWorkChange = (index, clave, value) => {
                   placeholder="Título del trabajo"
                   value={work.titulo}
                   onChange={(e) => handleWorkChange(idx, 'titulo', e.target.value)}
-                  className="w-full p-2 border border-warm-gray rounded mb-2"
+                  className="w-full p-2 border border-warm-gray rounded mb-2 text-sm sm:text-base"
                 />
                 <textarea
                   placeholder="Descripción"
                   value={work.descripcion}
                   onChange={(e) => handleWorkChange(idx, 'descripcion', e.target.value)}
-                  className="w-full p-2 border border-warm-gray rounded mb-2"
+                  className="w-full p-2 border border-warm-gray rounded mb-2 text-sm sm:text-base"
                   rows="3"
                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveWork(idx)}
-                  className="text-red-500 hover:text-red-700 mt-1"
+                  className="text-red-500 hover:text-red-700 sm:mt-1 text-sm sm:text-base"
                 >
                   Eliminar trabajo
                 </button>
@@ -634,11 +643,11 @@ const handleWorkChange = (index, clave, value) => {
           {/* Citas */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
-              <h2 className="text-lg font-semibold">Citas</h2>
+              <h2 className="text-base sm:text-lg font-semibold">Citas</h2>
               <button
                 type="button"
                 onClick={handleAddQuote}
-                className="text-2xl text-green-600 hover:text-green-800"
+                className="text-xl sm:text-2xl text-green-600 hover:text-green-800"
                 title="Agregar cita"
               >
                 <FiPlusCircle />
@@ -650,13 +659,13 @@ const handleWorkChange = (index, clave, value) => {
                   placeholder="Escribe una cita"
                   value={quote}
                   onChange={(e) => handleArrayChange('quotes', idx, e.target.value)}
-                  className="w-full p-2 border border-warm-gray rounded mb-2"
+                  className="w-full p-2 border border-warm-gray rounded mb-2 text-sm sm:text-base"
                   rows="3"
                 />
                 <button
                   type="button"
                   onClick={() => handleRemoveQuote(idx)}
-                  className="text-red-500 hover:text-red-700 mt-1"
+                  className="text-red-500 hover:text-red-700 sm:mt-1 text-sm sm:text-base"
                 >
                   Eliminar cita
                 </button>

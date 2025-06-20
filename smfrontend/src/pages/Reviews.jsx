@@ -53,17 +53,17 @@ const ReviewsPage = ({ onReviewAdded }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10 flex flex-col items-center gap-y-12 font-eb-garamond">
+    <div className="mx-auto px-4 py-6 md:py-10 flex flex-col items-center gap-y-6 md:gap-y-12 font-eb-garamond">
       
-      <section className="text-center max-w-3xl">
-        <h1 className="text-4xl font-bold font-cinzel text-warm-brown mb-4">
+      <section className="text-center max-w-sm lg:max-w-3xl flex flex-col gap-y-4">
+        <h1 className="xs:text-2xl text-4xl font-bold font-cinzel text-warm-brown">
           Dejanos tu reseña
         </h1>
-        <p className="text-deep-sepia text-lg mb-6">
+        <p className="text-deep-sepia text-lg">
           Gracias por visitar este proyecto. Si te gustó, te invito a dejar una reseña.
           Tus comentarios son muy valiosos para seguir creciendo y mejorando.
         </p>
-        <Button onClick={() => setShowModal(true)} variant="gold">
+        <Button onClick={() => setShowModal(true)} variant="gold" className='self-center'>
           Escribir reseña
         </Button>
       </section>

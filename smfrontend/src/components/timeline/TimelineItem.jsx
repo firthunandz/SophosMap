@@ -26,14 +26,14 @@ export default function TimelineItem({ philosopher, side, onSelect }) {
 
   return (
     <div
-      className={`relative w-full min-h-[100px] flex ${
+      className={`relative w-full min-h-[100px] flex justify-center md:${
         side === 'left' ? 'justify-start' : 'justify-end'
       }`}
     >
-      {/* Punto central de la línea */}
-      <span className="absolute left-1/2 -translate-x-1/2 top-8 w-5 h-5 rounded-full bg-antique-gold border-4 border-warm-brown z-10" />
+      <span className="hidden 2xl:inline-block absolute left-1/2 -translate-x-1/2 top-12 
+          w-5 h-5 rounded-full 
+          bg-antique-gold border-4 border-warm-brown z-10" />
 
-      {/* Tarjeta */}
       <div
         onClick={async () => {
           try {
@@ -44,15 +44,21 @@ export default function TimelineItem({ philosopher, side, onSelect }) {
           }
         }}
         className={`
-          w-80 sm:w-96 py-5 px-4 bg-parchment/80 border border-antique-gold 
-          rounded-lg shadow-lg relative cursor-pointer transition hover:scale-[1.02]
-          ${side === 'left' ? 'left-[20%] mr-[20%]' : 'right-[20%] ml-[20%]'}
+          cursor-pointer transition hover:scale-[1.02]
+          w-10/12
+          sm:w-6/12
+          md:w-80
+          lg:w-96
+          
+          py-5 px-4 bg-parchment/80 border border-antique-gold rounded-lg shadow-lg relative
+
+          ${side === 'left' ? 'md:left-[25%] md:mr-[20%]' : 'md:right-[25%] md:ml-[20%]'}
         `}
       >
-        {/* Estrella de favorito */}
+
         <button
           onClick={toggleFavorite}
-          className={`text-3xl absolute top-0 right-2 ${
+          className={`text-2xl md:text-3xl lg:text-4xl absolute top-0 right-2 ${
             isFavorite ? 'text-yellow-600' : 'text-gray-500'
           } hover:text-yellow-500 transition-colors`}
           title="Marcar como favorito"
@@ -60,14 +66,13 @@ export default function TimelineItem({ philosopher, side, onSelect }) {
           {isFavorite ? '★' : '☆'}
         </button>
 
-        {/* Contenido */}
-        <h2 className="font-cinzel text-xl font-semibold text-warm-brown mb-1 text-center">
+        <h2 className="font-cinzel text-lg sm:text-xl lg:text-2xl font-semibold text-warm-brown mb-1 text-center">
           {philosopher.nombre}
         </h2>
-        <p className="text-sm text-deep-sepia text-center">
+        <p className="text-sm md:text-base text-deep-sepia text-center mb-0.5">
           {philosopher.fecha_texto}
         </p>
-        <p className="text-sm italic text-center text-ink-black/80">
+        <p className="text-sm lg:text-base italic text-center text-ink-black/80">
           {philosopher.era}
         </p>
       </div>
