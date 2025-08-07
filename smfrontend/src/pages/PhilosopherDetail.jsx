@@ -28,7 +28,8 @@ const PhilosopherDetail = () => {
     maestros: [],
     works: [],
     books: [],
-    quotes: []
+    quotes: [],
+    image_url: ''
   });
   const [eras, setEras] = useState([]);
   const [religions, setReligions] = useState([]);
@@ -78,7 +79,8 @@ const PhilosopherDetail = () => {
           maestros: Array.isArray(data.maestros) ? data.maestros : [],
           works: Array.isArray(data.works) ? data.works : [],
           books: Array.isArray(data.books) ? data.books : [],
-          quotes: Array.isArray(data.quotes) ? data.quotes : []
+          quotes: Array.isArray(data.quotes) ? data.quotes : [],
+          image_url: data.image_url || ''
         });
       } catch (err) {
         console.error('Error fetching philosopher:', err);
@@ -207,7 +209,8 @@ const PhilosopherDetail = () => {
         maestros: philosopher.maestros,
         works: philosopher.works,
         books: philosopher.books,
-        quotes: philosopher.quotes
+        quotes: philosopher.quotes,
+        image_url: philosopher.image_url
       });
       setSuccessMessage('Cambios guardados exitosamente');
       setTimeout(() => {
@@ -755,6 +758,18 @@ const PhilosopherDetail = () => {
               </div>
             ))}
           </div>
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-1 text-base sm:text-lg font-semibold">URL de la imagen</label>
+          <input
+            type="url"
+            name="image_url"
+            value={philosopher.image_url}
+            onChange={handleInputChange}
+            placeholder="https://…"
+            className="w-full p-2 border border-warm-gray rounded"
+          />
         </div>
 
         {/* Botones de acción */}

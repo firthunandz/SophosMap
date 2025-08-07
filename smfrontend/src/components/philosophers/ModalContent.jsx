@@ -3,7 +3,7 @@ import SimpleField from './SimpleField';
 import ListField from './ListField';
 import WorksField from './WorksField';
 
-export default function ModalContent({ philosopher }) {
+const ModalContent = ({ philosopher }) => {
   return (
     <div className="pt-4 pb-2 px-6 sm:px-10 grid md:grid-cols-2 sm:gap-x-16">
       <div>
@@ -37,3 +37,5 @@ export default function ModalContent({ philosopher }) {
     </div>
   );
 }
+
+export default ModalContent;

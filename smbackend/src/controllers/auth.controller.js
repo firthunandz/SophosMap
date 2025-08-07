@@ -167,21 +167,6 @@ const userRegister = async (req, res) => {
       user: newUser.rows[0]
     });
 
-    // const token = generateToken(newUser.rows[0]);
-
-    // res.cookie('refreshToken', refreshToken, {
-    //   httpOnly: true,
-    //   secure: true,
-    //   sameSite: 'Strict',
-    //   maxAge: 30 * 24 * 60 * 60 * 1000
-    // });
-
-    // res.status(201).json({
-    //   message: 'Usuario registrado exitosamente',
-    //   token,
-    //   user: newUser.rows[0],
-    //   expiresIn: tokenExpiration
-    // });
   } catch (error) {
     console.error('Error en registro:', error);
     res.status(500).json({ error: 'Error al registrar usuario' });

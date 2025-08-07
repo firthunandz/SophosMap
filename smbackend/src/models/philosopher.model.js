@@ -8,6 +8,7 @@ const modelGetPhilosophers = async ({ era, school, name } = {}) => {
       p.nombre,
       p.fecha_nacimiento,
       p.fecha_texto,
+      p.image_url,
       e.nombre AS era,
 
       -- Campo virtual para ordenar cronológicamente (año con signo):
@@ -43,7 +44,6 @@ const modelGetPhilosophers = async ({ era, school, name } = {}) => {
     query += ` AND p.nombre ILIKE $${values.length}`;
   }
 
-  // query += ` ORDER BY sort_year ASC NULLS LAST, p.nombre ASC`;
   query += ` ORDER BY p.fecha_orden ASC NULLS LAST, p.nombre ASC`;
 
   const res = await pool.query(query, values);
@@ -51,19 +51,11 @@ const modelGetPhilosophers = async ({ era, school, name } = {}) => {
 };
 
 const modelSearchPhilosophers = async ({ q, eras, religions, schools }) => {
-  // let query = `
-  //   SELECT DISTINCT ON (p.id) p.*, e.nombre AS era, r.nombre AS religion, s.nombre AS escuela
-  //   FROM philosophers p
-  //   LEFT JOIN eras e ON p.era_id = e.id
-  //   LEFT JOIN schools s ON p.escuela_id = s.id
-  //   LEFT JOIN religions r ON p.religion_id = r.id
-  //   LEFT JOIN concepts c ON c.philosopher_id = p.id
-  //   WHERE 1=1
-  // `;
     let query = `
     SELECT DISTINCT ON (p.id)
       p.id,
       p.nombre,
+      p.image_url,
       p.fecha_nacimiento,
       p.fecha_texto,
       e.nombre AS era,
@@ -124,7 +116,6 @@ const modelSearchPhilosophers = async ({ q, eras, religions, schools }) => {
     values.push(...schoolsArray);
   }
 
-  // query += ` ORDER BY p.id, sort_year ASC NULLS LAST`;
   query += ` ORDER BY p.id, p.fecha_orden ASC NULLS LAST, p.nombre ASC`;
 
   const res = await pool.query(query, values);
@@ -136,6 +127,7 @@ const modelGetPhilosopherById = async (id) => {
     SELECT 
       p.*,
       p.fecha_texto,
+      p.image_url,
       e.nombre   AS era,
       es.nombre  AS escuela,
       r.nombre   AS religion

@@ -13,20 +13,21 @@ const NewPhilosopher = () => {
     lugar_nacimiento: '',
     fecha_muerte: '',
     lugar_muerte: '',
-    era: '', // FK
-    escuela: '', // FK
-    religion: '', // FK
+    era: '',
+    escuela: '',
+    religion: '',
     notas: '',
-    legado: [], // Array de legado
-    ocupacion: [], // Array de ocupaciones
-    intereses: [], // Array de intereses
-    conceptos: [], // Array de conceptos principales
-    influencias: [], // Array de influencias
-    estudiantes: [], // Array de estudiantes
-    maestros: [], // Array de maestros
-    works: [], // Array de trabajos
-    books: [], // Array de libros
-    quotes: [] // Array de citas
+    legado: [],
+    ocupacion: [],
+    intereses: [],
+    conceptos: [],
+    influencias: [],
+    estudiantes: [],
+    maestros: [],
+    works: [],
+    books: [],
+    quotes: [],
+    image_url: ''
   });
   const [eras, setEras] = useState([]);
   const [religions, setReligions] = useState([]);
@@ -672,6 +673,18 @@ const handleWorkChange = (index, clave, value) => {
               </div>
             ))}
           </div>
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-1 text-base sm:text-lg font-semibold">URL de la imagen</label>
+          <input
+            type="url"
+            name="image_url"
+            value={philosopher.image_url}
+            onChange={handleInputChange}
+            placeholder="https://…"
+            className="w-full p-2 border border-warm-gray rounded"
+          />
         </div>
 
         {/* Guardar */}

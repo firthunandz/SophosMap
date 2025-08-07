@@ -4,7 +4,7 @@ Aplicación desktop interactiva de línea temporal de filósofos.
 
 ## Estructura
 - `backend/`: API en Node.js + Express + PostgreSQL
-- `frontend/`: Aplicación en React + TypeScript
+- `frontend/`: Aplicación en React + JavaScript
 
 ## Instalación
 1. **Backend**:

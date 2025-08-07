@@ -29,6 +29,10 @@ const getPhilosopherById = async (req, res) => {
         p.nombre,
         p.fecha_nacimiento,
         p.fecha_texto,
+        p.era_id,
+        p.escuela_id,
+        p.religion_id,
+        p.image_url,
         p.lugar_nacimiento,
         p.fecha_muerte,
         p.lugar_muerte,
@@ -196,7 +200,8 @@ const createPhilosopher = async (req, res) => {
       maestros,
       books,
       works,
-      quotes
+      quotes,
+      image_url
     } = req.body;
 
     let fecha_nacimiento = null;
@@ -213,8 +218,8 @@ const createPhilosopher = async (req, res) => {
     const insertPhilosopherText = `
       INSERT INTO philosophers
         (nombre, fecha_nacimiento, fecha_texto, lugar_nacimiento, fecha_muerte, lugar_muerte,
-         era_id, escuela_id, religion_id, notas, fecha_orden)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+         era_id, escuela_id, religion_id, notas, fecha_orden, image_url)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
       RETURNING id;
     `;
     const insertPhilosopherValues = [
@@ -228,7 +233,8 @@ const createPhilosopher = async (req, res) => {
       escuela,
       religion,
       notas || null,
-      fecha_orden
+      fecha_orden,
+      image_url
     ];
 
     const philosopherResult = await client.query(
@@ -348,7 +354,8 @@ const updatePhilosopher = async (req, res) => {
       maestros,
       books,
       works,
-      quotes
+      quotes,
+      image_url
     } = req.body;
 
     let fecha_nacimiento = null;
@@ -371,9 +378,10 @@ const updatePhilosopher = async (req, res) => {
         era_id           = $7,
         escuela_id       = $8,
         religion_id      = $9,
-        notas            = $10
-        fecha_orden      = $11
-      WHERE id = $12
+        notas            = $10,
+        fecha_orden      = $11,
+        image_url        = $12
+      WHERE id = $13
     `;
     const updateMainValues = [
       nombre,
@@ -387,6 +395,7 @@ const updatePhilosopher = async (req, res) => {
       religion,
       notas || null,
       fecha_orden,
+      image_url,
       id
     ];
     await client.query(updateMainText, updateMainValues);

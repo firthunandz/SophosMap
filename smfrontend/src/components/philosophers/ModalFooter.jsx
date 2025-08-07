@@ -1,4 +1,4 @@
-export default function ModalFooter({ onClose }) {
+const ModalFooter = ({ onClose }) => {
   return (
     <div className="bg-warm-gray px-4 py-3 rounded-b-lg text-right">
       <button
@@ -10,3 +10,5 @@ export default function ModalFooter({ onClose }) {
     </div>
   );
 }
+
+export default ModalFooter;

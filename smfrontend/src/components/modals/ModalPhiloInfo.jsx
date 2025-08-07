@@ -4,7 +4,7 @@ import ModalHeader from '../philosophers/ModalHeader';
 import ModalContent from '../philosophers/ModalContent';
 import ModalFooter from '../philosophers/ModalFooter';
 
-export default function PhilosopherInfo({ philosopher: propPhilosopher, onClose }) {
+const PhilosopherInfo = ({ philosopher: propPhilosopher, onClose }) => {
   const token = localStorage.getItem('token');
   const [philosopher, setPhilosopher] = useState(propPhilosopher || null);
   const [error, setError] = useState(null);
@@ -55,3 +55,5 @@ export default function PhilosopherInfo({ philosopher: propPhilosopher, onClose 
     </div>
   );
 }
+
+export default PhilosopherInfo;

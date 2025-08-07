@@ -17,9 +17,9 @@ export default function ModalPhoto({
         mb-4
       `}
     >
-      {philosopher.foto_url ? (
+      {philosopher.image_url ? (
         <img
-          src={philosopher.foto_url}
+          src={philosopher.image_url}
           alt={philosopher.nombre}
           className="w-full h-full object-cover"
         />

@@ -1,9 +1,9 @@
-export default function ModalHeader({
+const ModalHeader = ({
   philosopher,
   isFavorite,
   toggleFavorite,
   onClose
-}) {
+}) => {
   return (
     <div className="bg-antique-gold p-2 sm:p-4 rounded-t-lg">
       <div className="flex justify-between items-center">
@@ -33,3 +33,5 @@ export default function ModalHeader({
     </div>
   );
 }
+
+export default ModalHeader
