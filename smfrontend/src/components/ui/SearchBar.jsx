@@ -84,7 +84,6 @@ const SearchBar = () => {
     <div className="fixed sm:top-[48px] md:top-[56px] lg:top-[70px] w-full bg-parchment shadow z-50 px-2 sm:px-20 py-1 sm:py-2 flex items-center gap-1 sm:gap-3 border-b border-warm-brown text-sm sm:text-base">
       <div className="flex flex-col w-full">
         <div className="flex items-center gap-2 w-full">
-          {/* Campo de búsqueda */}
           <SearchInput
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -92,7 +91,6 @@ const SearchBar = () => {
             className="flex-grow w-40"
           />
 
-          {/* Botón Buscar */}
           <Button onClick={handleSearch} variant="gold" className="text-xs sm:text-base xs:px-1 xs:py-1 sm:px-2 sm:py-1 md:px-3 md:py-2">
             Buscar
           </Button>
@@ -113,7 +111,6 @@ const SearchBar = () => {
           </button>
         </div>
 
-        {/* Badges debajo del SearchInput */}
         <div className="mt-1 sm:mt-2 flex gap-2 flex-wrap">
            {selectedEras.map((e,i) => (
             <span key={i}
@@ -135,7 +132,6 @@ const SearchBar = () => {
           ))}
         </div>
 
-        {/* Dropdown de selección de eras, visible solo al hacer clic en Filtros */}
         {showFilters && (
           <div className="mt-1 sm:mt-2 flex flex-col md:flex-row text-center sm:justify-between">
            <div>
@@ -149,7 +145,6 @@ const SearchBar = () => {
               </select>
             </div>
 
-            {/* Religiones */}
             <div>
               <select
                 defaultValue=""
@@ -161,7 +156,6 @@ const SearchBar = () => {
               </select>
             </div>
 
-            {/* Escuelas */}
             <div>
               <select
                 defaultValue=""
@@ -172,8 +166,6 @@ const SearchBar = () => {
                 {schools.map((s,i) => <option key={i} value={s}>{s}</option>)}
               </select>
             </div>
-
-            {/* Limpiar filtros */}
 
             <Button onClick={clearFilters} variant="gray" className="mt-1 sm:mt-0 text-sm sm:text-base">
               Limpiar filtros

@@ -12,10 +12,6 @@ const PhilosophersPage = () => {
   const { results, setResults } = useContext(SearchContext);
   const [query, setQuery] = useState("");
 
-  // const sortPhilosophers = (philosophers) => {
-  //   return philosophers.sort((a, b) => new Date(a.fecha_nacimiento) - new Date(b.fecha_nacimiento));
-  // };
-
   const fetchPhilosophers = async () => {
     try {
       const response = await api.get('/philosophers');

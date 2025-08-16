@@ -1,6 +1,5 @@
 const { query } = require('../database/connection');
 
-// Funciones básicas de usuario
 const getUserByUsername = async (username) => {
   const res = await query('SELECT * FROM users WHERE username = $1', [username]);
   return res.rows[0];
@@ -18,7 +17,6 @@ const createUser = async (userData) => {
 
 const getUserById = async (id) => {
   try {
-    // Obtener datos del usuario
     const userResult = await query(
       `SELECT id, username, nickname FROM users WHERE id = $1`, 
       [id]
@@ -27,7 +25,6 @@ const getUserById = async (id) => {
 
     const user = userResult.rows[0];
 
-    // Obtener los filósofos favoritos del usuario
     const favoritesResult = await query(
       `SELECT 
         p.id, 
@@ -41,7 +38,7 @@ const getUserById = async (id) => {
       [id]
     );
 
-    user.favorites = favoritesResult.rows; // Agregar favoritos al usuario
+    user.favorites = favoritesResult.rows;
     return user;
 
   } catch (error) {

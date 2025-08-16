@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 const CheckEmail = () => {
   return (
     <div className="my-10 flex flex-col items-center justify-center space-y-6 p-6 bg-papyrus rounded-lg shadow-lg w-3/4 max-w-lg mx-auto">

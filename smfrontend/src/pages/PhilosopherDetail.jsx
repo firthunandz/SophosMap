@@ -238,7 +238,6 @@ const PhilosopherDetail = () => {
 
   return (
     <div className="max-w-screen-lg mx-auto px-4 py-4 sm:py-6 sm:px-12">
-      {/* Volver arriba */}
       <div className="mb-4">
         <Button variant="gray" onClick={() => navigate('/admin/philosophers')}>
           <FiArrowLeft className="inline-block mr-1" />
@@ -257,7 +256,6 @@ const PhilosopherDetail = () => {
       )}
 
       <form onSubmit={handleSave}>
-        {/* Información básica */}
         <div className="flex flex-col gap-x-16 mb-4">
           <div className="mb-2">
             <label className="block mb-1 font-semibold text-base sm:text-lg">Nombre completo</label>
@@ -338,7 +336,6 @@ const PhilosopherDetail = () => {
           </div>
         </div>
 
-        {/* Relaciones (FK) */}
         <div className="flex justify-around mb-4 flex-col gap-y-2 sm:flex-row sm:gap-y-0 sm:gap-x-4 sm:px-4">
           <div>
             <label className="block font-semibold text-base sm:text-lg">Era</label>
@@ -389,9 +386,7 @@ const PhilosopherDetail = () => {
           </div>
         </div>
 
-        {/* Campos dinámicos en dos columnas */}
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">
-          {/* Legado */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Legado</h2>
@@ -425,7 +420,6 @@ const PhilosopherDetail = () => {
             ))}
           </div>
 
-          {/* Ocupación */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Ocupación</h2>
@@ -459,7 +453,6 @@ const PhilosopherDetail = () => {
             ))}
           </div>
 
-          {/* Intereses */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Intereses</h2>
@@ -493,7 +486,6 @@ const PhilosopherDetail = () => {
             ))}
           </div>
 
-          {/* Conceptos */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Conceptos</h2>
@@ -527,7 +519,6 @@ const PhilosopherDetail = () => {
             ))}
           </div>
 
-          {/* Influencias */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Influencias</h2>
@@ -561,7 +552,6 @@ const PhilosopherDetail = () => {
             ))}
           </div>
 
-          {/* Estudiantes */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Estudiantes</h2>
@@ -595,7 +585,6 @@ const PhilosopherDetail = () => {
             ))}
           </div>
 
-          {/* Maestros */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Maestros</h2>
@@ -630,9 +619,7 @@ const PhilosopherDetail = () => {
           </div>
         </div>
 
-        {/* Libros, Trabajos y Citas */}
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8 mt-2 md:mt-8">
-          {/* Libros */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Libros</h2>
@@ -686,7 +673,6 @@ const PhilosopherDetail = () => {
             ))}
           </div>
 
-          {/* Trabajos */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Trabajos</h2>
@@ -726,7 +712,6 @@ const PhilosopherDetail = () => {
             ))}
           </div>
 
-          {/* Citas */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Citas</h2>
@@ -772,7 +757,6 @@ const PhilosopherDetail = () => {
           />
         </div>
 
-        {/* Botones de acción */}
         <div className="flex justify-center my-2 sm:my-6">
           <div className="flex gap-2 sm:gap-4">
             <Button variant="gray" onClick={() => navigate('/admin/philosophers')} className='text-xs sm:text-base'>

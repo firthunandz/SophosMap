@@ -181,7 +181,6 @@ const handleWorkChange = (index, clave, value) => {
       </h1>
 
       <form onSubmit={handleSubmit}>
-        {/* Información básica */}
         <div className="flex flex-col sm:mb-4">
           <div className='mb-2'>
             <label className="block mb-1 text-base sm:text-lg font-semibold">Nombre completo</label>
@@ -257,7 +256,6 @@ const handleWorkChange = (index, clave, value) => {
           </div>
         </div>
 
-        {/* Relaciones (FK) */}
         <div className="flex flex-col gap-y-2 justify-around mb-4 sm:flex-row sm:gap-x-2 sm:px-4">
           <div>
             <label className="block sm:mb-2">Era</label>
@@ -307,7 +305,6 @@ const handleWorkChange = (index, clave, value) => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 sm:gap-8">
-          {/* Legado */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Legado</h2>
@@ -341,7 +338,6 @@ const handleWorkChange = (index, clave, value) => {
             ))}
           </div>
 
-          {/* Ocupación */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Ocupación</h2>
@@ -375,7 +371,6 @@ const handleWorkChange = (index, clave, value) => {
             ))}
           </div>
 
-          {/* Intereses */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Intereses</h2>
@@ -409,7 +404,6 @@ const handleWorkChange = (index, clave, value) => {
             ))}
           </div>
 
-          {/* Conceptos principales */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Conceptos</h2>
@@ -443,7 +437,6 @@ const handleWorkChange = (index, clave, value) => {
             ))}
           </div>
 
-          {/* Influencias */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Influencias</h2>
@@ -477,7 +470,6 @@ const handleWorkChange = (index, clave, value) => {
             ))}
           </div>
 
-          {/* Estudiantes */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Estudiantes</h2>
@@ -511,7 +503,6 @@ const handleWorkChange = (index, clave, value) => {
             ))}
           </div>
 
-          {/* Maestros */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Maestros</h2>
@@ -547,7 +538,6 @@ const handleWorkChange = (index, clave, value) => {
         </div>
 
         <div className="flex flex-col gap-y-2 sm:gap-8 mt-2 sm:mt-8">
-          {/* Libros */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Libros</h2>
@@ -601,7 +591,6 @@ const handleWorkChange = (index, clave, value) => {
             ))}
           </div>
 
-          {/* Trabajos */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Trabajos</h2>
@@ -641,7 +630,6 @@ const handleWorkChange = (index, clave, value) => {
             ))}
           </div>
 
-          {/* Citas */}
           <div>
             <div className="flex items-center gap-x-6 mb-2">
               <h2 className="text-base sm:text-lg font-semibold">Citas</h2>
@@ -687,7 +675,6 @@ const handleWorkChange = (index, clave, value) => {
           />
         </div>
 
-        {/* Guardar */}
         <div className="text-center mt-6">
           <Button type="submit" variant="gold">Guardar Filósofo</Button>
         </div>

@@ -2,7 +2,6 @@ const pool = require('../database/connection');
 
 const favoritesModel = {
   toggle: async (userId, philosopherId) => {
-    // Verificar si ya existe
     const existing = await pool.query(
       'SELECT * FROM favorites WHERE user_id = $1 AND philosopher_id = $2',
       [userId, philosopherId]

@@ -26,7 +26,7 @@ const getFavorites = async (req, res) => {
 
 const addFavorite = async (req, res) => {
   const { philosopherId } = req.body;
-  const userId = req.user.id; // Obtenido del token
+  const userId = req.user.id;
 
   if (!userId) {
     return res.status(401).json({ error: 'No autorizado. Iniciá sesión.' });

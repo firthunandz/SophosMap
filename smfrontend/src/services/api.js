@@ -42,7 +42,6 @@ api.interceptors.response.use(
         window.dispatchEvent(new CustomEvent('authExpired', {
           detail: 'Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.'
         }));
-        // window.dispatchEvent(new Event('authChange'));
         return Promise.reject(refreshError);
       }
     }

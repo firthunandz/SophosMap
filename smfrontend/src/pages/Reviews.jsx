@@ -108,34 +108,3 @@ const ReviewsPage = ({ onReviewAdded }) => {
 };
 
 export default ReviewsPage;
-
-
-{/* <h1 className="text-2xl font-bold mb-4 text-center">Dejanos tu reseña</h1>
-<p className="text-center text-gray-700 mb-8">
-  Gracias por visitar este proyecto. Si te gustó, te invito a dejar una reseña.
-  Tus comentarios son muy valiosos para seguir creciendo y mejorando. ¡Gracias por formar parte!
-</p>
-
-<button 
-  onClick={() => setShowModal(true)}
-  className="mb-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
->
-  Escribí tu reseña
-</button>
-
-<h2 className="text-xl font-semibold mb-4">Reseñas</h2>
-<div className="space-y-4">
-  {reviews.length === 0 ? (
-    <p className="text-gray-500">Aún no hay reseñas. Sé el primero en dejar una!</p>
-  ) : (
-    reviews.map((review, i) => (
-      <div key={i} className="bg-gray-100 p-4 rounded shadow">
-        <p className="text-gray-800 italic">"{review.text}"</p>
-        <div className="mt-2 text-sm text-gray-600 flex justify-between">
-          <span>- {review.name}</span>
-          <span>{review.date}</span>
-        </div>
-      </div>
-    ))
-  )}
-</div> */}

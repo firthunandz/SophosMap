@@ -1,3 +1,5 @@
+// NOT WORKING YET
+
 import { useEffect, useState } from 'react';
 
 export default function YearScrollbar({ containerRef, minYear, maxYear }) {
