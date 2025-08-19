@@ -108,11 +108,13 @@ const userLogin = async (req, res) => {
     const token = generateToken(user);
     const refreshToken = generateRefreshToken(user);
     const { password_hash, ...userData } = user;
+    const isProd = process.env.NODE_ENV === 'production';
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      secure: true,
-      sameSite: 'Strict',
+      secure: isProd,
+      sameSite: isProd ? 'None' : 'Lax',
+      path: '/',
       maxAge: 30 * 24 * 60 * 60 * 1000
     });
 
