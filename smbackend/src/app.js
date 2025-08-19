@@ -5,7 +5,6 @@ const cors = require('cors');
 const app = express();
 const cookieParser = require('cookie-parser');
 
-
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || 'http://localhost:5173';
 app.use(cors({
     origin: FRONTEND_ORIGIN,
@@ -41,6 +40,6 @@ app.use('/schools', schoolsRouter);
 app.use('/religions', religionsRouter);
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Servidor corriendo en ${PORT}`);
 });
