@@ -27,6 +27,15 @@ app.get('/', (req, res) => {
     res.send('¡Servidor de Sophomap funcionando!');
 });
 
+app.get('/health', async (req, res) => {
+  try {
+    await require('./database/connection').query('select 1');
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: e.message });
+  }
+});
+
 app.use('/sophosmap', timelineRouter);
 app.use('/auth', authRouter);
 app.use('/users', favoritesRouter);
