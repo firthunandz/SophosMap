@@ -27,13 +27,8 @@ app.get('/', (req, res) => {
     res.send('¡Servidor de Sophomap funcionando!');
 });
 
-app.get('/health', async (req, res) => {
-  try {
-    await require('./database/connection').query('select 1');
-    res.json({ ok: true });
-  } catch (e) {
-    res.status(500).json({ ok: false, error: e.message });
-  }
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ ok: true });
 });
 
 app.use('/sophosmap', timelineRouter);
