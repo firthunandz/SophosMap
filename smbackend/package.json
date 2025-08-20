@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/app.js",
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/app.js",
@@ -16,12 +18,16 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "compression": "^1.8.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-rate-limit": "^8.0.1",
     "google-auth-library": "^9.15.1",
+    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.1",
     "nodemailer": "^6.10.1",
     "passport": "^0.7.0",
     "pg": "^8.14.1",

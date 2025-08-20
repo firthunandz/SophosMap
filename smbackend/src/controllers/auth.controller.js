@@ -10,6 +10,17 @@ const jwtSecret = process.env.JWT_SECRET;
 const tokenExpiration = '15m';
 const refreshExpiration = '30d';
 
+const APP_URL = process.env.FRONTEND_ORIGIN || 'http://localhost:5173';
+
+const isProd = process.env.NODE_ENV === 'production';
+const refreshCookieOptions = {
+  httpOnly: true,
+  secure: isProd,
+  sameSite: isProd ? 'None' : 'Lax',
+  path: '/',
+  maxAge: 30 * 24 * 60 * 60 * 1000 // 30 días
+};
+
 const generateToken = (user) => {
   return jwt.sign(
     {
@@ -29,24 +40,6 @@ const generateRefreshToken = (user) => {
     process.env.REFRESH_SECRET,
     { expiresIn: refreshExpiration }
   );
-};
-
-const refreshToken = (req, res) => {
-  const token = req.body.refreshToken;
-
-  if (!token) return res.status(401).json({ error: 'Refresh token requerido' });
-
-  jwt.verify(token, process.env.REFRESH_SECRET, async (err, decoded) => {
-    if (err) return res.status(403).json({ error: 'Refresh token inválido o expirado' });
-
-    const userResult = await query('SELECT * FROM users WHERE id = $1', [decoded.id]);
-    const user = userResult.rows[0];
-
-    if (!user) return res.status(401).json({ error: 'Usuario no encontrado' });
-
-    const newAccessToken = generateToken(user);
-    res.json({ accessToken: newAccessToken });
-  });
 };
 
 const refreshAccessToken = async (req, res) => {
@@ -87,7 +80,6 @@ const userLogin = async (req, res) => {
       'SELECT * FROM users WHERE email = $1 OR username = $1', 
       [identifier]
     );
-    
     const user = userResult.rows[0];
 
     if (!user) {
@@ -95,7 +87,6 @@ const userLogin = async (req, res) => {
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
-    
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Credenciales incorrectas' });
     }
@@ -107,24 +98,41 @@ const userLogin = async (req, res) => {
     
     const token = generateToken(user);
     const refreshToken = generateRefreshToken(user);
-    const { password_hash, ...userData } = user;
-    const isProd = process.env.NODE_ENV === 'production';
 
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? 'None' : 'Lax',
-      path: '/',
-      maxAge: 30 * 24 * 60 * 60 * 1000
-    });
+    res.cookie('refreshToken', refreshToken, refreshCookieOptions);
 
-    res.json({
+    const {
+      password_hash,
+      reset_token, reset_token_expires,
+      verification_token, verification_token_expires,
+      ...userData
+    } = user;
+
+    return res.json({
       message: 'Login exitoso',
       token,
-      refreshToken,
+      // refreshToken,
       user: userData,
-      expiresIn: tokenExpiration
+      expiresIn: '15m'
     });
+    // const { password_hash, ...userData } = user;
+    // const isProd = process.env.NODE_ENV === 'production';
+
+    // res.cookie('refreshToken', refreshToken, {
+    //   httpOnly: true,
+    //   secure: isProd,
+    //   sameSite: isProd ? 'None' : 'Lax',
+    //   path: '/',
+    //   maxAge: 30 * 24 * 60 * 60 * 1000
+    // });
+
+    // res.json({
+    //   message: 'Login exitoso',
+    //   token,
+    //   refreshToken,
+    //   user: userData,
+    //   expiresIn: tokenExpiration
+    // });
   } catch (error) {
     console.error('Error en login:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
@@ -194,7 +202,7 @@ const forgotPassword = async (req, res) => {
       [token, expiration, email]
     );
 
-    const resetLink = `http://localhost:5173/reset-password?token=${token}&email=${email}`;
+    const resetLink = `${APP_URL}/reset-password?token=${token}&email=${email}`;
     const message = `
       <div style="font-family: sans-serif; line-height: 1.5; color: #333;">
         <h2>Hola ${user.nickname || user.username},</h2>
@@ -266,7 +274,7 @@ const sendVerificationEmail = (user, res) => {
     [verificationToken, expiration, user.email]
   );
 
-  const verificationLink = `http://localhost:5173/verify-email?token=${verificationToken}&email=${user.email}`;
+  const verificationLink = `${APP_URL}/verify-email?token=${verificationToken}&email=${user.email}`;
   const message = `
     <div style="font-family: 'Arial', sans-serif; background-color: #f4e6c3; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto;">
       <div style="text-align: center; padding-bottom: 20px;">
@@ -346,7 +354,7 @@ const resendVerificationEmail = async (req, res) => {
       [verificationToken, expiration, email]
     );
 
-    const verificationLink = `http://localhost:5173/verify-email?token=${verificationToken}&email=${email}`;
+    const verificationLink = `${APP_URL}/verify-email?token=${verificationToken}&email=${email}`;
     const message = `
       <div style="font-family: 'Arial', sans-serif; background-color: #f4e6c3; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto;">
         <div style="text-align: center; padding-bottom: 20px;">
