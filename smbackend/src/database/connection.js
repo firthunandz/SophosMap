@@ -1,10 +1,3 @@
-const dns = require('dns');
-
-try {
-  dns.setDefaultResultOrder && dns.setDefaultResultOrder('ipv4first');
-} catch (e) {
-}
-
 const { Pool } = require('pg');
 require('dotenv').config();
 
@@ -15,8 +8,6 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
   port: Number(process.env.DB_PORT || 5432),
   ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
-  lookup: (hostname, _opts, cb) => dns.lookup(hostname, { family: 4, all: false }, cb),
-
 });
 
 module.exports = {
