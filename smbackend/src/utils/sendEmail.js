@@ -14,9 +14,9 @@ const sendEmail = async ({ to, subject, html }) => {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_PASS
       },
-      connectionTimeout: 10000, // 10 seg
-      greetingTimeout: 10000,
-      socketTimeout: 10000,
+      connectionTimeout: 25000, // 25 seg
+      greetingTimeout: 25000,
+      socketTimeout: 25000,
       logger: true,
       debug: process.env.NODE_ENV !== 'production'
     });
