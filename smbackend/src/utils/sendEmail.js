@@ -1,31 +1,41 @@
 const nodemailer = require('nodemailer');
 
-async function sendEmail({ to, subject, html }) {
-  const hasSmtp = !!process.env.SMTP_HOST && !!process.env.SMTP_USER && !!process.env.SMTP_PASS;
-  const hasGmail = !!process.env.GMAIL_USER && !!process.env.GMAIL_PASS;
+const sendEmail = async ({ to, subject, html }) => {
+  try {
+    console.log('Configurando transporte de correo...');
+    console.log('GMAIL_USER:', process.env.GMAIL_USER);
+    console.log('GMAIL_PASS:', process.env.GMAIL_PASS ? '***' : 'No definido');
 
-  if (!hasSmtp && !hasGmail) {
-    throw new Error('No SMTP credentials found (set SMTP_* or GMAIL_* envs)');
-  }
-
-  let transporter;
-  if (hasSmtp) {
-    const port = Number(process.env.SMTP_PORT || 587);
-    transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port,
-      secure: port === 465,
-      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS
+      },
+      connectionTimeout: 10000, // 10 seg
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
+      logger: true,
+      debug: process.env.NODE_ENV !== 'production'
     });
-  } else {
-    transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_PASS },
-    });
-  }
 
-  const from = process.env.MAIL_FROM || process.env.GMAIL_USER || process.env.SMTP_USER;
-  await transporter.sendMail({ from, to, subject, html });
-}
+    const mailOptions = {
+      from: `"Sophos Map" <${process.env.GMAIL_USER}>`,
+      to,
+      subject,
+      html
+    };
+
+    console.log('Enviando correo a:', to);
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Correo enviado:', info.messageId);
+    return info;
+  } catch (err) {
+    console.error('Error al enviar el correo:', err);
+    throw new Error('No se pudo enviar el correo');
+  }
+};
 
 module.exports = sendEmail;

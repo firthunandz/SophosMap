@@ -111,28 +111,9 @@ const userLogin = async (req, res) => {
     return res.json({
       message: 'Login exitoso',
       token,
-      // refreshToken,
       user: userData,
-      expiresIn: '15m'
+      expiresIn: tokenExpiration
     });
-    // const { password_hash, ...userData } = user;
-    // const isProd = process.env.NODE_ENV === 'production';
-
-    // res.cookie('refreshToken', refreshToken, {
-    //   httpOnly: true,
-    //   secure: isProd,
-    //   sameSite: isProd ? 'None' : 'Lax',
-    //   path: '/',
-    //   maxAge: 30 * 24 * 60 * 60 * 1000
-    // });
-
-    // res.json({
-    //   message: 'Login exitoso',
-    //   token,
-    //   refreshToken,
-    //   user: userData,
-    //   expiresIn: tokenExpiration
-    // });
   } catch (error) {
     console.error('Error en login:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
@@ -170,7 +151,7 @@ const userRegister = async (req, res) => {
       [nickname, username, email, passwordHash]
     );
 
-    sendVerificationEmail(newUser.rows[0], res);
+    await sendVerificationEmail(newUser.rows[0], res);
 
     res.status(201).json({
       message: 'Usuario registrado exitosamente. Verifica tu correo para completar el registro.',
@@ -240,6 +221,10 @@ const resetPassword = async (req, res) => {
   const { email, token, newPassword } = req.body;
 
   try {
+    if (!newPassword || newPassword.length < 8) {
+      return res.status(400).json({ error: 'La contraseña debe tener al menos 8 caracteres' });
+    }
+    
     const result = await query(
       'SELECT * FROM users WHERE email = $1 AND reset_token = $2 AND reset_token_expires > NOW()',
       [email, token]
@@ -265,43 +250,48 @@ const resetPassword = async (req, res) => {
   }
 };
 
-const sendVerificationEmail = (user, res) => {
+const sendVerificationEmail = async (user, res) => {
   const verificationToken = crypto.randomBytes(32).toString('hex');
   const expiration = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
 
-  query(
-    'UPDATE users SET verification_token = $1, verification_token_expires = $2 WHERE email = $3',
-    [verificationToken, expiration, user.email]
-  );
+  try {
+    query(
+      'UPDATE users SET verification_token = $1, verification_token_expires = $2 WHERE email = $3',
+      [verificationToken, expiration, user.email]
+    );
 
-  const verificationLink = `${APP_URL}/verify-email?token=${verificationToken}&email=${user.email}`;
-  const message = `
-    <div style="font-family: 'Arial', sans-serif; background-color: #f4e6c3; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto;">
-      <div style="text-align: center; padding-bottom: 20px;">
-        <h2 style="color: #4a2c1d; font-size: 24px; font-weight: bold;">¡Bienvenido a Sophos Map, ${user.username}!</h2>
-        <p style="color: #2d2d2d; font-size: 18px; line-height: 1.5;">
-          Por favor, haz clic en el siguiente enlace para verificar tu correo y activar tu cuenta.
-        </p>
-        <p style="text-align: center; padding-top: 20px;">
-          <a href="${verificationLink}" style="background-color: #b88e2f; color: white; padding: 12px 20px; text-decoration: none; font-size: 16px; border-radius: 5px;">
-            Verificar correo
-          </a>
-        </p>
+    const verificationLink = `${APP_URL}/verify-email?token=${verificationToken}&email=${user.email}`;
+    const message = `
+      <div style="font-family: 'Arial', sans-serif; background-color: #f4e6c3; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto;">
+        <div style="text-align: center; padding-bottom: 20px;">
+          <h2 style="color: #4a2c1d; font-size: 24px; font-weight: bold;">¡Bienvenido a Sophos Map, ${user.username}!</h2>
+          <p style="color: #2d2d2d; font-size: 18px; line-height: 1.5;">
+            Por favor, haz clic en el siguiente enlace para verificar tu correo y activar tu cuenta.
+          </p>
+          <p style="text-align: center; padding-top: 20px;">
+            <a href="${verificationLink}" style="background-color: #b88e2f; color: white; padding: 12px 20px; text-decoration: none; font-size: 16px; border-radius: 5px;">
+              Verificar correo
+            </a>
+          </p>
+        </div>
+        <div style="text-align: center; padding-top: 30px; font-size: 14px; color: #888;">
+          <p>Si no solicitaste este registro, puedes ignorar este mensaje.</p>
+          <p style="font-size: 14px;">Cualquier problema, comunícate con nosotros al correo: <a href="mailto:sophosmapapp@gmail.com" style="color: #2d2d2d;">sophosmapapp@gmail.com</a></p>
+          <p>Gracias,</p>
+          <p><strong>El equipo de Sophos Map</strong></p>
+        </div>
       </div>
-      <div style="text-align: center; padding-top: 30px; font-size: 14px; color: #888;">
-        <p>Si no solicitaste este registro, puedes ignorar este mensaje.</p>
-        <p style="font-size: 14px;">Cualquier problema, comunícate con nosotros al correo: <a href="mailto:sophosmapapp@gmail.com" style="color: #2d2d2d;">sophosmapapp@gmail.com</a></p>
-        <p>Gracias,</p>
-        <p><strong>El equipo de Sophos Map</strong></p>
-      </div>
-    </div>
-  `;
+    `;
 
-  sendEmail({
-    to: user.email,
-    subject: 'Verificación de correo en Sophos Map',
-    html: message
-  }).catch(err => console.error('Error al enviar email:', err));
+    await sendEmail({
+      to: user.email,
+      subject: 'Verificación de correo en Sophos Map',
+      html: message
+    });
+  } catch (err) {
+    console.error('Error al enviar email de verificación:', err);
+    throw err; // O maneja el error según tu lógica
+  }
 };
 
 const verifyEmail = async (req, res) => {
