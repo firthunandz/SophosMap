@@ -83,7 +83,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal Server Error' });
 });
 
-const PORT = process.env.DB_PORT || 4000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor corriendo en ${PORT}`);
 });
