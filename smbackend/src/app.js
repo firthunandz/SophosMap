@@ -69,14 +69,15 @@ const reviewsRouter = require('./routes/reviews.routes');
 const erasRouter = require('./routes/eras.routes');
 const schoolsRouter = require('./routes/schools.routes');
 const religionsRouter = require('./routes/religions.routes');
+const testRoutes = require('./src/routes/test.routes');
 
 app.get('/', (req, res) => {
     res.send('¡Servidor de Sophomap funcionando!');
 });
 
-app.get('/api/health', (req, res) => {
-  res.status(200).json({ ok: true });
-});
+// app.get('/api/health', (req, res) => {
+//   res.status(200).json({ ok: true });
+// });
 
 app.use('/sophosmap', timelineRouter);
 app.use('/auth', authLimiter, authRouter);
@@ -86,6 +87,7 @@ app.use('/reviews', reviewsRouter);
 app.use('/eras', erasRouter);
 app.use('/schools', schoolsRouter);
 app.use('/religions', religionsRouter);
+app.use('/api', testRoutes);
 
 app.use((req, res, next) => {
   res.status(404).json({ error: 'Not Found' });
