@@ -69,7 +69,7 @@ const reviewsRouter = require('./routes/reviews.routes');
 const erasRouter = require('./routes/eras.routes');
 const schoolsRouter = require('./routes/schools.routes');
 const religionsRouter = require('./routes/religions.routes');
-const testRoutes = require('./src/routes/test.routes');
+const testRoutes = require('./routes/test.routes');
 
 app.get('/', (req, res) => {
     res.send('¡Servidor de Sophomap funcionando!');
