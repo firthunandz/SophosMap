@@ -2,18 +2,6 @@ const express = require('express');
 const dotenv = require('dotenv');
 dotenv.config();
 
-console.log('Iniciando app.js...');
-console.log('Variables de entorno:', {
-  PORT: process.env.PORT,
-  DB_HOST: process.env.DB_HOST,
-  DB_USER: process.env.DB_USER,
-  DB_NAME: process.env.DB_NAME,
-  DB_PORT: process.env.DB_PORT,
-  DB_SSL: process.env.DB_SSL,
-  NODE_ENV: process.env.NODE_ENV,
-  FRONTEND_ORIGIN: process.env.FRONTEND_ORIGIN,
-});
-
 const app = express();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -21,8 +9,6 @@ const helmet = require('helmet');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 const morgan = require('morgan');
-
-console.log('Configurando middlewares...');
 
 app.set('trust proxy', 1);
 
@@ -52,8 +38,6 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(compression());
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
-
-console.log('Configurando rutas...');
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 min
@@ -104,7 +88,6 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 4000;
-console.log('Iniciando servidor en puerto:', PORT);
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor corriendo en ${PORT}`);
 });
