@@ -86,6 +86,10 @@ const userLogin = async (req, res) => {
       return res.status(401).json({ error: 'Credenciales incorrectas' });
     }
 
+    if (!user.verified) {
+      return res.status(403).json({ error: 'Cuenta no verificada. Por favor, verifica tu correo.' });
+    }
+
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Credenciales incorrectas' });
@@ -142,13 +146,15 @@ const userRegister = async (req, res) => {
     }
 
     const passwordHash = await bcrypt.hash(password, saltRounds);
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    const expiration = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
 
     const newUser = await query(
       `INSERT INTO users 
-       (nickname, username, email, password_hash) 
-       VALUES ($1, $2, $3, $4) 
-       RETURNING id, username, email, nickname, role, created_at`,
-      [nickname, username, email, passwordHash]
+       (nickname, username, email, password_hash, verification_token, verification_token_expires, verified) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7) 
+       RETURNING id, username, email, nickname, role, created_at, verified`,
+      [nickname, username, email, passwordHash, verificationToken, expiration, false]
     );
 
     await sendVerificationEmail(newUser.rows[0], res);
@@ -168,38 +174,48 @@ const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
   try {
-    const result = await query('SELECT * FROM users WHERE email = $1', [email]);
-    const user = result.rows[0];
+    if (!email) {
+      return res.status(400).json({ error: 'Email es requerido' });
+    }
+
+    const userResult = await query('SELECT * FROM users WHERE email = $1', [email]);
+    const user = userResult.rows[0];
 
     if (!user) {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
-    const token = crypto.randomBytes(32).toString('hex');
-    const expiration = new Date(Date.now() + 60 * 60 * 1000);
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
 
     await query(
       'UPDATE users SET reset_token = $1, reset_token_expires = $2 WHERE email = $3',
-      [token, expiration, email]
+      [resetToken, resetTokenExpires, email]
     );
 
-    const resetLink = `${APP_URL}/reset-password?token=${token}&email=${email}`;
+    const resetLink = `${APP_URL}/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
     const message = `
-      <div style="font-family: sans-serif; line-height: 1.5; color: #333;">
-        <h2>Hola ${user.nickname || user.username},</h2>
-        <p>Has solicitado restablecer tu contraseña en <strong>Sophos Map</strong>.</p>
-        <p>Hacé clic en el siguiente botón para crear una nueva contraseña:</p>
-        <p>
-          <a href="${resetLink}" style="background-color: #b88e2f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-            Restablecer contraseña
-          </a>
-        </p>
-        <p>O copia y pega este enlace en tu navegador:</p>
-        <p><a href="${resetLink}">${resetLink}</a></p>
-        <hr/>
-        <p style="font-size: 0.9em; color: #888;">
-          Si vos no solicitaste este cambio, ignorá este mensaje. El enlace expirará en 1 hora.
-        </p>
+      <div style="font-family: 'Arial', sans-serif; background-color: #f4e6c3; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto;">
+        <div style="text-align: center; padding-bottom: 20px;">
+          <h2 style="color: #4a2c1d; font-size: 24px; font-weight: bold;">Hola ${user.nickname || user.username},</h2>
+          <p style="color: #2d2d2d; font-size: 18px; line-height: 1.5;">
+            Has solicitado restablecer tu contraseña en <strong>Sophos Map</strong>. Haz clic en el siguiente enlace para crear una nueva contraseña.
+          </p>
+          <p style="text-align: center; padding-top: 20px;">
+            <a href="${resetLink}" style="background-color: #b88e2f; color: white; padding: 12px 20px; text-decoration: none; font-size: 16px; border-radius: 5px;">
+              Restablecer contraseña
+            </a>
+          </p>
+          <p style="color: #2d2d2d; font-size: 14px;">
+            O copia y pega este enlace en tu navegador: <a href="${resetLink}">${resetLink}</a>
+          </p>
+        </div>
+        <div style="text-align: center; padding-top: 30px; font-size: 14px; color: #888;">
+          <p>Si no solicitaste este cambio, puedes ignorar este mensaje.</p>
+          <p style="font-size: 14px;">Cualquier problema, comunícate con nosotros al correo: <a href="mailto:sophosmapapp@gmail.com" style="color: #2d2d2d;">sophosmapapp@gmail.com</a></p>
+          <p>Gracias,</p>
+          <p><strong>El equipo de Sophos Map</strong></p>
+        </div>
       </div>
     `;
 
@@ -210,57 +226,51 @@ const forgotPassword = async (req, res) => {
     });
 
     res.json({ message: 'Enlace para restablecer la contraseña enviado al correo electrónico' });
-
   } catch (error) {
     console.error('Error en forgotPassword:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    res.status(500).json({ error: 'Error al procesar la solicitud' });
   }
 };
 
 const resetPassword = async (req, res) => {
-  const { email, token, newPassword } = req.body;
+  const { token, email, newPassword } = req.body;
 
   try {
-    if (!newPassword || newPassword.length < 8) {
-      return res.status(400).json({ error: 'La contraseña debe tener al menos 8 caracteres' });
+    if (!token || !email || !newPassword) {
+      return res.status(400).json({ error: 'Token, email y nueva contraseña son requeridos' });
     }
-    
-    const result = await query(
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({ error: 'La nueva contraseña debe tener al menos 8 caracteres' });
+    }
+
+    const userResult = await query(
       'SELECT * FROM users WHERE email = $1 AND reset_token = $2 AND reset_token_expires > NOW()',
       [email, token]
     );
+    const user = userResult.rows[0];
 
-    const user = result.rows[0];
     if (!user) {
       return res.status(400).json({ error: 'Token inválido o expirado' });
     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const passwordHash = await bcrypt.hash(newPassword, saltRounds);
 
     await query(
       'UPDATE users SET password_hash = $1, reset_token = NULL, reset_token_expires = NULL WHERE email = $2',
-      [hashedPassword, email]
+      [passwordHash, email]
     );
 
     res.json({ message: 'Contraseña restablecida correctamente' });
-
   } catch (error) {
     console.error('Error en resetPassword:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    res.status(500).json({ error: 'Error al restablecer la contraseña' });
   }
 };
 
 const sendVerificationEmail = async (user, res) => {
-  const verificationToken = crypto.randomBytes(32).toString('hex');
-  const expiration = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
-
   try {
-    query(
-      'UPDATE users SET verification_token = $1, verification_token_expires = $2 WHERE email = $3',
-      [verificationToken, expiration, user.email]
-    );
-
-    const verificationLink = `${APP_URL}/verify-email?token=${verificationToken}&email=${user.email}`;
+    const verificationLink = `${APP_URL}/verify-email?token=${user.verification_token}&email=${encodeURIComponent(user.email)}`;
     const message = `
       <div style="font-family: 'Arial', sans-serif; background-color: #f4e6c3; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto;">
         <div style="text-align: center; padding-bottom: 20px;">
@@ -288,9 +298,9 @@ const sendVerificationEmail = async (user, res) => {
       subject: 'Verificación de correo en Sophos Map',
       html: message
     });
-  } catch (err) {
-    console.error('Error al enviar email de verificación:', err);
-    throw err; // O maneja el error según tu lógica
+  } catch (error) {
+    console.error('Error al enviar correo de verificación:', error);
+    throw new Error('No se pudo enviar el correo de verificación');
   }
 };
 
@@ -298,12 +308,15 @@ const verifyEmail = async (req, res) => {
   const { token, email } = req.query;
 
   try {
-    const result = await query(
+    if (!token || !email) {
+      return res.status(400).json({ error: 'Token y email son requeridos' });
+    }
+
+    const userResult = await query(
       'SELECT * FROM users WHERE email = $1 AND verification_token = $2 AND verification_token_expires > NOW()',
       [email, token]
     );
-
-    const user = result.rows[0];
+    const user = userResult.rows[0];
 
     if (!user) {
       return res.status(400).json({ error: 'Token inválido o expirado' });
@@ -316,7 +329,7 @@ const verifyEmail = async (req, res) => {
 
     res.json({ message: 'Correo verificado exitosamente' });
   } catch (error) {
-    console.error('Error al verificar email:', error);
+    console.error('Error en verifyEmail:', error);
     res.status(500).json({ error: 'Error al verificar el correo' });
   }
 };
@@ -325,8 +338,12 @@ const resendVerificationEmail = async (req, res) => {
   const { email } = req.body;
 
   try {
-    const result = await query('SELECT * FROM users WHERE email = $1', [email]);
-    const user = result.rows[0];
+    if (!email) {
+      return res.status(400).json({ error: 'Email es requerido' });
+    }
+
+    const userResult = await query('SELECT * FROM users WHERE email = $1', [email]);
+    const user = userResult.rows[0];
 
     if (!user) {
       return res.status(404).json({ error: 'Usuario no encontrado' });
@@ -337,14 +354,14 @@ const resendVerificationEmail = async (req, res) => {
     }
 
     const verificationToken = crypto.randomBytes(32).toString('hex');
-    const expiration = new Date(Date.now() + 60 * 60 * 1000);  // 1 hora
+    const expiration = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
 
     await query(
       'UPDATE users SET verification_token = $1, verification_token_expires = $2 WHERE email = $3',
       [verificationToken, expiration, email]
     );
 
-    const verificationLink = `${APP_URL}/verify-email?token=${verificationToken}&email=${email}`;
+    const verificationLink = `${APP_URL}/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
     const message = `
       <div style="font-family: 'Arial', sans-serif; background-color: #f4e6c3; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto;">
         <div style="text-align: center; padding-bottom: 20px;">
@@ -366,7 +383,7 @@ const resendVerificationEmail = async (req, res) => {
         </div>
       </div>
     `;
-  
+
     await sendEmail({
       to: email,
       subject: 'Verificación de correo en Sophos Map',
