@@ -26,21 +26,23 @@ console.log('Configurando middlewares...');
 
 app.set('trust proxy', 1);
 
-const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || 'http://localhost:5173';
-const allowed = [
+const allowedOrigins = [
   'http://localhost:5173',
-  'http://127.0.0.1:5173',
-  FRONTEND_ORIGIN,
+  process.env.FRONTEND_ORIGIN || 'https://sophosmap.vercel.app'
 ].filter(Boolean);
 
 app.use(cors({
-  origin(origin, cb) {
-    if (!origin) return cb(null, true);
-    const ok = allowed.includes(origin) || /\.vercel\.app$/.test(origin);
-    cb(ok ? null : new Error('Not allowed by CORS'), ok);
+  origin: (origin, callback) => {
+    console.log('CORS Origin:', origin); // Log para depuración
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.error('CORS bloqueado para:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
   },
   credentials: true,
-  optionsSuccessStatus: 204,
+  optionsSuccessStatus: 204
 }));
 
 app.use(express.json());
