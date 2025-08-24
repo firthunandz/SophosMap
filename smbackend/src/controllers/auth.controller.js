@@ -270,33 +270,44 @@ const resetPassword = async (req, res) => {
 
 const sendVerificationEmail = async (user, res) => {
   try {
-    const verificationLink = `${APP_URL}/verify-email?token=${user.verification_token}&email=${encodeURIComponent(user.email)}`;
+    const verificationLink = `${process.env.APP_URL}/verify-email?token=${user.verification_token}&email=${encodeURIComponent(user.email)}`;
     const message = `
-      <div style="font-family: 'Arial', sans-serif; background-color: #f4e6c3; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto;">
-        <div style="text-align: center; padding-bottom: 20px;">
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+      </head>
+      <body style="margin: 0; padding: 0; font-family: 'Arial', sans-serif; background-color: #f4f4f4;">
+        <div style="max-width: 600px; margin: 20px auto; background-color: #f4e6c3; padding: 20px; border-radius: 10px; text-align: center;">
           <h2 style="color: #4a2c1d; font-size: 24px; font-weight: bold;">¡Bienvenido a Sophos Map, ${user.username}!</h2>
-          <p style="color: #2d2d2d; font-size: 18px; line-height: 1.5;">
-            Por favor, haz clic en el siguiente enlace para verificar tu correo y activar tu cuenta.
+          <p style="color: #2d2d2d; font-size: 16px; line-height: 1.5;">
+            Haz clic en el botón para verificar tu correo y activar tu cuenta:
           </p>
-          <p style="text-align: center; padding-top: 20px;">
-            <a href="${verificationLink}" style="background-color: #b88e2f; color: white; padding: 12px 20px; text-decoration: none; font-size: 16px; border-radius: 5px;">
+          <p style="margin: 20px 0;">
+            <a href="${verificationLink}" style="display: inline-block; background-color: #b88e2f; color: white; padding: 12px 20px; text-decoration: none; font-size: 16px; border-radius: 5px;">
               Verificar correo
             </a>
           </p>
+          <p style="color: #2d2d2d; font-size: 14px;">
+            O copia y pega este enlace en tu navegador:<br>
+            <a href="${verificationLink}" style="color: #b88e2f; text-decoration: underline;">${verificationLink}</a>
+          </p>
+          <div style="margin-top: 30px; font-size: 14px; color: #888;">
+            <p>Si no solicitaste este registro, ignora este mensaje.</p>
+            <p>¿Problemas? Contáctanos en <a href="mailto:sophosmapapp@gmail.com" style="color: #2d2d2d;">sophosmapapp@gmail.com</a></p>
+            <p>Gracias,<br><strong>El equipo de Sophos Map</strong></p>
+          </div>
         </div>
-        <div style="text-align: center; padding-top: 30px; font-size: 14px; color: #888;">
-          <p>Si no solicitaste este registro, puedes ignorar este mensaje.</p>
-          <p style="font-size: 14px;">Cualquier problema, comunícate con nosotros al correo: <a href="mailto:sophosmapapp@gmail.com" style="color: #2d2d2d;">sophosmapapp@gmail.com</a></p>
-          <p>Gracias,</p>
-          <p><strong>El equipo de Sophos Map</strong></p>
-        </div>
-      </div>
+      </body>
+      </html>
     `;
 
     await sendEmail({
       to: user.email,
       subject: 'Verificación de correo en Sophos Map',
-      html: message
+      html: message,
+      text: `¡Bienvenido a Sophos Map, ${user.username}!\n\nPor favor, verifica tu correo haciendo clic en este enlace: ${verificationLink}\n\nSi no solicitaste este registro, ignora este mensaje.\n\nGracias,\nEl equipo de Sophos Map`
     });
   } catch (error) {
     console.error('Error al enviar correo de verificación:', error);
@@ -361,33 +372,44 @@ const resendVerificationEmail = async (req, res) => {
       [verificationToken, expiration, email]
     );
 
-    const verificationLink = `${APP_URL}/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
+    const verificationLink = `${process.env.APP_URL}/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
     const message = `
-      <div style="font-family: 'Arial', sans-serif; background-color: #f4e6c3; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto;">
-        <div style="text-align: center; padding-bottom: 20px;">
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+      </head>
+      <body style="margin: 0; padding: 0; font-family: 'Arial', sans-serif; background-color: #f4f4f4;">
+        <div style="max-width: 600px; margin: 20px auto; background-color: #f4e6c3; padding: 20px; border-radius: 10px; text-align: center;">
           <h2 style="color: #4a2c1d; font-size: 24px; font-weight: bold;">¡Hola ${user.username}!</h2>
-          <p style="color: #2d2d2d; font-size: 18px; line-height: 1.5;">
-            Recibimos una solicitud para reenviar el enlace de verificación de tu correo. Haz clic en el siguiente enlace para continuar con la activación de tu cuenta.
+          <p style="color: #2d2d2d; font-size: 16px; line-height: 1.5;">
+            Recibimos una solicitud para reenviar el enlace de verificación. Haz clic en el botón para continuar:
           </p>
-          <p style="text-align: center; padding-top: 20px;">
-            <a href="${verificationLink}" style="background-color: #b88e2f; color: white; padding: 12px 20px; text-decoration: none; font-size: 16px; border-radius: 5px;">
+          <p style="margin: 20px 0;">
+            <a href="${verificationLink}" style="display: inline-block; background-color: #b88e2f; color: white; padding: 12px 20px; text-decoration: none; font-size: 16px; border-radius: 5px;">
               Verificar correo
             </a>
           </p>
+          <p style="color: #2d2d2d; font-size: 14px;">
+            O copia y pega este enlace en tu navegador:<br>
+            <a href="${verificationLink}" style="color: #b88e2f; text-decoration: underline;">${verificationLink}</a>
+          </p>
+          <div style="margin-top: 30px; font-size: 14px; color: #888;">
+            <p>Si no solicitaste este reenvío, ignora este mensaje.</p>
+            <p>¿Problemas? Contáctanos en <a href="mailto:sophosmapapp@gmail.com" style="color: #2d2d2d;">sophosmapapp@gmail.com</a></p>
+            <p>Gracias,<br><strong>El equipo de Sophos Map</strong></p>
+          </div>
         </div>
-        <div style="text-align: center; padding-top: 30px; font-size: 14px; color: #888;">
-          <p>Si no solicitaste este reenvío, puedes ignorar este mensaje.</p>
-          <p style="font-size: 14px;">Cualquier problema, comunícate con nosotros al correo: <a href="mailto:sophosmapapp@gmail.com" style="color: #2d2d2d;">sophosmapapp@gmail.com</a></p>
-          <p>Gracias,</p>
-          <p><strong>El equipo de Sophos Map</strong></p>
-        </div>
-      </div>
+      </body>
+      </html>
     `;
 
     await sendEmail({
       to: email,
       subject: 'Verificación de correo en Sophos Map',
-      html: message
+      html: message,
+      text: `¡Hola ${user.username}!\n\nPor favor, verifica tu correo haciendo clic en este enlace: ${verificationLink}\n\nSi no solicitaste este reenvío, ignora este mensaje.\n\nGracias,\nEl equipo de Sophos Map`
     });
 
     res.json({ message: 'Se ha enviado un nuevo enlace de verificación a tu correo' });
