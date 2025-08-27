@@ -13,6 +13,8 @@ const sendEmail = async ({ to, subject, html }) => {
 
     const info = await sgMail.send(msg);
 
+    console.log('Correo enviado:', { to, subject, response: info[0].statusCode });
+
     return info;
   } catch (err) {
     console.error('Error al enviar el correo:', err);

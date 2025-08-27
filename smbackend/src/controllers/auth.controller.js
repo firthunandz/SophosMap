@@ -270,7 +270,15 @@ const resetPassword = async (req, res) => {
 
 const sendVerificationEmail = async (user, res) => {
   try {
+    if (!user.verification_token) {
+      console.error('No verification token for user:', user.email);
+      throw new Error('No se generó el token de verificación');
+    }
+
     const verificationLink = `${process.env.APP_URL}/verify-email?token=${user.verification_token}&email=${encodeURIComponent(user.email)}`;
+
+    console.log('Verification Link:', verificationLink);
+    console.log('User Data:', { email: user.email, verification_token: user.verification_token });
     const message = `
       <!DOCTYPE html>
       <html>

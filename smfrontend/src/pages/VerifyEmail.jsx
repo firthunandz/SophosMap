@@ -15,6 +15,7 @@ const VerifyEmail = () => {
   const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
+    console.log('URL params:', { token, email });
     if (token && email) {
       api.get(`/auth/verify-email?token=${token}&email=${email}`)
         .then((response) => {
