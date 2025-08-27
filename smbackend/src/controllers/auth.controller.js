@@ -153,7 +153,7 @@ const userRegister = async (req, res) => {
       `INSERT INTO users 
        (nickname, username, email, password_hash, verification_token, verification_token_expires, verified) 
        VALUES ($1, $2, $3, $4, $5, $6, $7) 
-       RETURNING id, username, email, nickname, role, created_at, verified`,
+       RETURNING id, username, email, nickname, role, created_at, verified, verification_token`,
       [nickname, username, email, passwordHash, verificationToken, expiration, false]
     );
 

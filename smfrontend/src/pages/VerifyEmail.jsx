@@ -38,8 +38,10 @@ const VerifyEmail = () => {
     setIsResending(true);
     try {
       await api.post('/auth/resend-verification', { email });
+      setError('');
     } catch (err) {
       console.error('Error al reenviar enlace:', err);
+      setError('Error al reenviar el enlace de verificación');
     } finally {
       setIsResending(false);
     }
