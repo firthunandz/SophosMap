@@ -35,6 +35,7 @@ export const AuthProvider = ({ children }) => {
   }, [location.pathname]);
 
   const login = (token, userData) => {
+    console.log('[AuthContext] Guardando token:', token);
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
