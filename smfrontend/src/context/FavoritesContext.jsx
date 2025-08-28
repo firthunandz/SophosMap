@@ -8,7 +8,7 @@ const FavoritesContext = createContext();
 export const FavoritesProvider = ({ children }) => {
   const [favorites, setFavorites] = useState([]);
   const { showSpinner, hideSpinner } = useSpinner();
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   const fetchFavorites = useCallback(async () => {
     console.log('[fetchFavorites] Ejecutando para user:', user?.id);
@@ -31,7 +31,7 @@ export const FavoritesProvider = ({ children }) => {
   // useEffect(() => {
   //   fetchFavorites();
   // }, [fetchFavorites]);
-  
+
   // useEffect(() => {
   //   if (user) {
   //     showSpinner();
