@@ -41,16 +41,16 @@ export const FavoritesProvider = ({ children }) => {
   //   }
   // }, [fetchFavorites, user, showSpinner, hideSpinner]);
   useEffect(() => {
-    let isMounted = true;
-    if (isAuthenticated && user) {
+    let isFetched = false;
+    if (isAuthenticated && user && !isFetched) {
+      isFetched = true;
       fetchFavorites().catch((error) => {
-        if (isMounted) {
-          console.error('Error en useEffect fetchFavorites:', error);
-        }
+        console.error('Error en useEffect fetchFavorites:', error);
+        isFetched = false; // Permitir reintentos si falla
       });
     }
     return () => {
-      isMounted = false;
+      isFetched = false; // Limpiar al desmontar
     };
   }, [fetchFavorites, isAuthenticated, user]);
 
