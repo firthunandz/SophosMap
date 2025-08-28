@@ -1,16 +1,21 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import api from '../services/api';
 import { useSpinner } from './SpinnerContext';
+import { useAuth } from './authContext';
 
 const FavoritesContext = createContext();
 
 export const FavoritesProvider = ({ children }) => {
   const [favorites, setFavorites] = useState([]);
   const { showSpinner, hideSpinner } = useSpinner();
+  const { user } = useAuth();
 
   const fetchFavorites = useCallback(async () => {
     const token = localStorage.getItem('token');
-    if (!token) return;
+    if (!token || !user) {
+      setFavorites([]);
+      return;
+    }
 
     try {
       showSpinner();
@@ -21,7 +26,7 @@ export const FavoritesProvider = ({ children }) => {
     } finally {
       hideSpinner();
     }
-  }, [showSpinner, hideSpinner]);
+  }, [user, showSpinner, hideSpinner]);
 
   useEffect(() => {
     fetchFavorites();
