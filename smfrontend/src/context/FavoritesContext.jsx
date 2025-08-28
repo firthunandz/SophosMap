@@ -11,32 +11,48 @@ export const FavoritesProvider = ({ children }) => {
   const { user } = useAuth();
 
   const fetchFavorites = useCallback(async () => {
-    console.log('[fetchFavorites] Ejecutando para user:', user?.id); // Log para depuración
-    const token = localStorage.getItem('token');
-    if (!token || !user) {
+    console.log('[fetchFavorites] Ejecutando para user:', user?.id);
+    if (!isAuthenticated || !user) {
       setFavorites([]);
       return;
     }
-
     try {
+      showSpinner();
       const res = await api.get('/users/favorites');
       setFavorites(res.data || []);
     } catch (error) {
       console.error('Error al obtener favoritos:', error);
+      setFavorites([]);
+    } finally {
+      hideSpinner();
     }
-  }, [user, showSpinner, hideSpinner]);
+  }, [user, isAuthenticated, showSpinner, hideSpinner]);
 
   // useEffect(() => {
   //   fetchFavorites();
   // }, [fetchFavorites]);
+  
+  // useEffect(() => {
+  //   if (user) {
+  //     showSpinner();
+  //     fetchFavorites().finally(() => hideSpinner());
+  //   } else {
+  //     setFavorites([]);
+  //   }
+  // }, [fetchFavorites, user, showSpinner, hideSpinner]);
   useEffect(() => {
-    if (user) {
-      showSpinner();
-      fetchFavorites().finally(() => hideSpinner());
-    } else {
-      setFavorites([]);
+    let isMounted = true;
+    if (isAuthenticated && user) {
+      fetchFavorites().catch((error) => {
+        if (isMounted) {
+          console.error('Error en useEffect fetchFavorites:', error);
+        }
+      });
     }
-  }, [fetchFavorites, user, showSpinner, hideSpinner]);
+    return () => {
+      isMounted = false;
+    };
+  }, [fetchFavorites, isAuthenticated, user]);
 
   const addFavorite = async (philosopher) => {
     try {

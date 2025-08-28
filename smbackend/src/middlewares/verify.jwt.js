@@ -15,7 +15,7 @@ const verifyToken = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log(`[verifyToken] Token decodificado: ${JSON.stringify(decoded)}`);
     
-    const user = await query('SELECT id FROM users WHERE id = $1', [decoded.id]);
+    const user = await pool.query('SELECT id FROM users WHERE id = $1', [decoded.id]);
     
     if (!user.rows[0]) {
       console.log(`[verifyToken] Usuario no encontrado para id ${decoded.id}`);

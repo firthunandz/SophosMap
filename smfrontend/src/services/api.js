@@ -13,8 +13,10 @@ api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+    console.log(`[API Request] ${config.method.toUpperCase()} ${config.url}, Token: ${token.substring(0, 10)}...`);
+  } else {
+    console.log(`[API Request] ${config.method.toUpperCase()} ${config.url}, Token: Ausente`);
   }
-  console.log(`[API Request] ${config.method.toUpperCase()} ${config.url}, Token: ${token ? 'Presente' : 'Ausente'}`);
   return config;
 });
 
@@ -39,7 +41,7 @@ api.interceptors.response.use(
         const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/auth/refresh`, {}, {
           withCredentials: true
         });
-        console.log('[Interceptor] Token refrescado:', data.token);
+        console.log('[Interceptor] Token refrescado:', data.token.substring(0, 10) + '...');
         localStorage.setItem('token', data.token);
         originalRequest.headers['Authorization'] = `Bearer ${data.token}`;
         return api(originalRequest);
