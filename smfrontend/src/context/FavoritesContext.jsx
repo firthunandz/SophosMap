@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import api from '../services/api';
 import { useSpinner } from './SpinnerContext';
 import { useAuth } from './authContext';
@@ -9,6 +9,7 @@ export const FavoritesProvider = ({ children }) => {
   const [favorites, setFavorites] = useState([]);
   const { showSpinner, hideSpinner } = useSpinner();
   const { user, isAuthenticated } = useAuth();
+  const isFetched = useRef(false);
 
   const fetchFavorites = useCallback(async () => {
     console.log('[fetchFavorites] Ejecutando para user:', user?.id);
@@ -41,17 +42,25 @@ export const FavoritesProvider = ({ children }) => {
   //   }
   // }, [fetchFavorites, user, showSpinner, hideSpinner]);
   useEffect(() => {
-    let isFetched = false;
-    if (isAuthenticated && user && !isFetched) {
-      isFetched = true;
+    if (isAuthenticated && user && !isFetched.current) {
+      isFetched.current = true;
+      const timeoutId = setTimeout(() => {
+        console.warn('[FavoritesContext] Timeout alcanzado para fetchFavorites');
+        isFetched.current = false; // Permitir reintentos si es necesario
+      }, 10000); // Límite de 10 segundos
+
       fetchFavorites().catch((error) => {
         console.error('Error en useEffect fetchFavorites:', error);
-        isFetched = false; // Permitir reintentos si falla
+        isFetched.current = false; // Permitir reintentos si falla
+      }).finally(() => {
+        clearTimeout(timeoutId);
       });
+
+      return () => {
+        clearTimeout(timeoutId);
+        isFetched.current = false; // Limpiar al desmontar
+      };
     }
-    return () => {
-      isFetched = false; // Limpiar al desmontar
-    };
   }, [fetchFavorites, isAuthenticated, user]);
 
   const addFavorite = async (philosopher) => {

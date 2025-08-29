@@ -19,23 +19,26 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
     }
     setIsLoading(false);
+    console.log('[AuthContext] Estado inicial - isAuthenticated:', isAuthenticated, 'user:', userData);
   }, []);
 
   useEffect(() => {
+    console.log('[AuthContext] Cambio de estado - isAuthenticated:', isAuthenticated, 'user:', user, 'location:', location.pathname);
     const handleAuthExpired = (e) => {
       setAuthError(e.detail);
+      console.log('[AuthContext] Evento authExpired:', e.detail);
     };
   
     window.addEventListener('authExpired', handleAuthExpired);
     return () => window.removeEventListener('authExpired', handleAuthExpired);
-  }, []);
+  }, [isAuthenticated, user, location.pathname]);
 
   useEffect(() => {
     setAuthError(null);
   }, [location.pathname]);
 
   const login = (token, userData) => {
-    console.log('[AuthContext] Guardando token:', token);
+    console.log('[AuthContext] Guardando token:', token.substring(0, 10) + '...');
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
@@ -47,6 +50,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
     setUser(null);
     setIsAuthenticated(false);
+    console.log('[AuthContext] Logout ejecutado');
   };
 
   return (
