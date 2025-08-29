@@ -27,7 +27,7 @@ export const FavoritesProvider = ({ children }) => {
     } finally {
       hideSpinner();
     }
-  }, [user, isAuthenticated, showSpinner, hideSpinner]);
+  }, [user, isAuthenticated]);
 
   // useEffect(() => {
   //   fetchFavorites();
@@ -61,7 +61,7 @@ export const FavoritesProvider = ({ children }) => {
         isFetched.current = false; // Limpiar al desmontar
       };
     }
-  }, [fetchFavorites, isAuthenticated, user]);
+  }, [fetchFavorites, isAuthenticated, user.id]);
 
   const addFavorite = async (philosopher) => {
     try {

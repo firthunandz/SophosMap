@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const AuthContext = createContext();
@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     const userData = JSON.parse(localStorage.getItem('user') || 'null');
 
-    if (token) {
+    if (token && userData) {
       setUser(userData);
       setIsAuthenticated(true);
     }
@@ -53,8 +53,11 @@ export const AuthProvider = ({ children }) => {
     console.log('[AuthContext] Logout ejecutado');
   };
 
+  // Estabilizar el objeto user para evitar cambios de referencia
+  const userMemo = useMemo(() => user, [user?.id]);
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, isLoading, login, logout, authError, setAuthError }}>
+    <AuthContext.Provider value={{ user: userMemo, isAuthenticated, isLoading, login, logout, authError, setAuthError }}>
       {children}
     </AuthContext.Provider>
   );

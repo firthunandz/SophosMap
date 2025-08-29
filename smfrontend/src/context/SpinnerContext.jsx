@@ -4,16 +4,24 @@ const SpinnerContext = createContext();
 
 export const SpinnerProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
-  const spinnerTimeout = useRef(null);
-  
+  const activeSpinners = useRef(0); // Contador de spinners activos
+
   const showSpinner = () => {
-    spinnerTimeout.current = setTimeout(() => setLoading(true), 200);
+    activeSpinners.current += 1;
+    if (activeSpinners.current === 1) {
+      setLoading(true);
+      console.log('[SpinnerContext] Mostrando spinner, activeSpinners:', activeSpinners.current);
+    }
   };
+
   const hideSpinner = () => {
-    clearTimeout(spinnerTimeout.current);
-    setLoading(false);
+    activeSpinners.current = Math.max(0, activeSpinners.current - 1);
+    if (activeSpinners.current === 0) {
+      setLoading(false);
+      console.log('[SpinnerContext] Ocultando spinner, activeSpinners:', activeSpinners.current);
+    }
   };
-  
+
   return (
     <SpinnerContext.Provider value={{ showSpinner, hideSpinner, loading }}>
       {children}
