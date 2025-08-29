@@ -12,7 +12,7 @@ export const FavoritesProvider = ({ children }) => {
   const isFetched = useRef(false);
 
   const fetchFavorites = useCallback(async () => {
-    console.log('[fetchFavorites] Ejecutando para user:', user?.id);
+    console.log('[fetchFavorites] Ejecutando para user:', user ? user.id : 'null');
     if (!isAuthenticated || !user) {
       setFavorites([]);
       return;
@@ -61,7 +61,7 @@ export const FavoritesProvider = ({ children }) => {
         isFetched.current = false; // Limpiar al desmontar
       };
     }
-  }, [fetchFavorites, isAuthenticated, user.id]);
+  }, [fetchFavorites, isAuthenticated]);
 
   const addFavorite = async (philosopher) => {
     try {
