@@ -12,7 +12,6 @@ export const FavoritesProvider = ({ children }) => {
   const isFetched = useRef(false);
 
   const fetchFavorites = useCallback(async () => {
-    console.log('[fetchFavorites] Ejecutando para user:', user ? user.id : 'null');
     if (!isAuthenticated || !user) {
       setFavorites([]);
       return;
@@ -29,38 +28,16 @@ export const FavoritesProvider = ({ children }) => {
     }
   }, [user, isAuthenticated]);
 
-  // useEffect(() => {
-  //   fetchFavorites();
-  // }, [fetchFavorites]);
-
-  // useEffect(() => {
-  //   if (user) {
-  //     showSpinner();
-  //     fetchFavorites().finally(() => hideSpinner());
-  //   } else {
-  //     setFavorites([]);
-  //   }
-  // }, [fetchFavorites, user, showSpinner, hideSpinner]);
   useEffect(() => {
     if (isAuthenticated && user && !isFetched.current) {
       isFetched.current = true;
-      const timeoutId = setTimeout(() => {
-        console.warn('[FavoritesContext] Timeout alcanzado para fetchFavorites');
-        isFetched.current = false; // Permitir reintentos si es necesario
-      }, 10000); // Límite de 10 segundos
-
       fetchFavorites().catch((error) => {
-        console.error('Error en useEffect fetchFavorites:', error);
-        isFetched.current = false; // Permitir reintentos si falla
-      }).finally(() => {
-        clearTimeout(timeoutId);
+        isFetched.current = false;
       });
-
-      return () => {
-        clearTimeout(timeoutId);
-        isFetched.current = false; // Limpiar al desmontar
-      };
     }
+    return () => {
+      isFetched.current = false;
+    };
   }, [fetchFavorites, isAuthenticated]);
 
   const addFavorite = async (philosopher) => {

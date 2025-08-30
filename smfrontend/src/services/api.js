@@ -13,16 +13,12 @@ api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
-    console.log(`[API Request] ${config.method.toUpperCase()} ${config.url}, Token: ${token.substring(0, 10)}...`);
-  } else {
-    console.log(`[API Request] ${config.method.toUpperCase()} ${config.url}, Token: Ausente`);
   }
   return config;
 });
 
 api.interceptors.response.use(
   (response) => {
-    console.log(`[API Response] ${response.config.method.toUpperCase()} ${response.config.url} - Status: ${response.status}`);
     return response;
   },
   async (error) => {
@@ -36,12 +32,10 @@ api.interceptors.response.use(
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      console.log('[Interceptor] Intentando refrescar token...');
       try {
         const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/auth/refresh`, {}, {
           withCredentials: true
         });
-        console.log('[Interceptor] Token refrescado:', data.token.substring(0, 10) + '...');
         localStorage.setItem('token', data.token);
         originalRequest.headers['Authorization'] = `Bearer ${data.token}`;
         return api(originalRequest);

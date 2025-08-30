@@ -19,14 +19,11 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
     }
     setIsLoading(false);
-    console.log('[AuthContext] Estado inicial - isAuthenticated:', isAuthenticated, 'user:', userData);
   }, []);
 
   useEffect(() => {
-    console.log('[AuthContext] Cambio de estado - isAuthenticated:', isAuthenticated, 'user:', user, 'location:', location.pathname);
     const handleAuthExpired = (e) => {
       setAuthError(e.detail);
-      console.log('[AuthContext] Evento authExpired:', e.detail);
     };
   
     window.addEventListener('authExpired', handleAuthExpired);
@@ -53,7 +50,6 @@ export const AuthProvider = ({ children }) => {
     console.log('[AuthContext] Logout ejecutado');
   };
 
-  // Estabilizar el objeto user para evitar cambios de referencia
   const userMemo = useMemo(() => user, [user?.id]);
 
   return (
