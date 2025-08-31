@@ -35,7 +35,6 @@ export const AuthProvider = ({ children }) => {
   }, [location.pathname]);
 
   const login = (token, userData) => {
-    console.log('[AuthContext] Guardando token:', token.substring(0, 10) + '...');
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
@@ -47,7 +46,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
     setUser(null);
     setIsAuthenticated(false);
-    console.log('[AuthContext] Logout ejecutado');
   };
 
   const userMemo = useMemo(() => user, [user?.id]);
