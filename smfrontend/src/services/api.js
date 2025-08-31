@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 30000,
+  timeout: 25000,
   headers: {
     'Content-Type': 'application/json'
   },
@@ -23,12 +23,6 @@ api.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    console.error(`[API Error] ${originalRequest.method.toUpperCase()} ${originalRequest.url}:`, {
-      Code: error.code,
-      Message: error.message,
-      Status: error.response?.status,
-      Response: error.response?.data
-    });
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;

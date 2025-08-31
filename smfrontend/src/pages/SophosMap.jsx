@@ -11,7 +11,7 @@ export default function SophosMap() {
       {!user && (
         <div className="p-2 rounded-lg text-center">
           <p>
-            <Link to="/users/login" className="text-ink-black hover:underline">
+            <Link to="/login" className="text-ink-black hover:underline">
               Inicia sesión
             </Link> para guardar tus filósofos favoritos
           </p>

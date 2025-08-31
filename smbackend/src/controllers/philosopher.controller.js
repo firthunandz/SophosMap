@@ -19,7 +19,6 @@ const getAllPhilosophers = async (req, res) => {
 
 const getPhilosopherById = async (req, res) => {
   const { id } = req.params;
-  const startTime = Date.now();
   const client = await pool.connect();
 
   try {
@@ -108,8 +107,6 @@ const getPhilosopherById = async (req, res) => {
     );
     philosopher.quotes = quotesRes.rows.map(r => r.cita);
 
-    const duration = Date.now() - startTime;
-    console.log(`[getPhilosopherById] Query completed in ${duration}ms for id ${id}`);
     return res.json(philosopher);
   } catch (err) {
     console.error('Error al obtener filósofo por ID:', err);
@@ -216,7 +213,6 @@ const createPhilosopher = async (req, res) => {
     }
 
     const fecha_orden = parseFechaOrden(rawFechaNacimiento, fecha_texto);
-
 
     const insertPhilosopherText = `
       INSERT INTO philosophers
